@@ -1,0 +1,16 @@
+# Owner-specific denylist for scripts/scan_secrets.py
+#
+# COPY this file to `.scan_denylist.local` and add your OWN real names,
+# companies, domains and infrastructure IPs, one per line. That local file is
+# git-ignored and MUST NEVER be committed, so your real personal data stays out
+# of version control while the scanner still guards against it leaking into the
+# rest of the repo.
+#
+# Lines starting with `#` and blank lines are ignored. Matching is
+# case-insensitive substring.
+#
+# Examples (replace with your real values in .scan_denylist.local):
+# your-company-gmbh
+# your-domain.example
+# yourname
+# 203.0.113.7
