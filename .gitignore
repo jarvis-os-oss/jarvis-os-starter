@@ -7,6 +7,8 @@
 *.token
 secrets/
 .secrets/
+# Owner's real denylist terms for the PII scanner (the .example is tracked).
+.scan_denylist.local
 
 # Runtime artefacts
 logs/

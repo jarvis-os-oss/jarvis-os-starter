@@ -34,9 +34,10 @@ class ScanSecretsTest(unittest.TestCase):
 
     def test_scanner_catches_denylisted_token(self):
         planted = os.path.join(ROOT, "tests", "_planted_pii.txt")
-        # Build the denylisted token from parts so this literal never sits in a
-        # tracked file (which would make the scanner flag its own test).
-        token = "bracket" + "lab"
+        # Use a GENERIC placeholder that ships in the default denylist, built
+        # from parts so this literal never sits in a tracked file (which would
+        # make the scanner flag its own test).
+        token = "example" + "-corp"
         try:
             with open(planted, "w") as fh:
                 fh.write(f"some reference to {token} here\n")
@@ -47,6 +48,51 @@ class ScanSecretsTest(unittest.TestCase):
             self.assertIn("DENYLISTED", r.stdout)
         finally:
             os.remove(planted)
+
+    def test_structural_pass_flags_public_ip_even_in_scanner(self):
+        # The self-exclude blind spot: layer 2 must flag a routable public IP
+        # regardless of the denylist and WITHOUT exempting any file. The IP is
+        # assembled at runtime so no contiguous public IP sits in this source.
+        planted = os.path.join(ROOT, "tests", "_planted_ip.txt")
+        pub = ".".join(["8", "8", "8", "8"])
+        try:
+            with open(planted, "w") as fh:
+                fh.write(f"host {pub} reachable\n")
+            r = subprocess.run(
+                [sys.executable, SCANNER, "--all"], capture_output=True, text=True
+            )
+            self.assertEqual(r.returncode, 1, "scanner missed a routable public IP")
+            self.assertIn("Routable public IP", r.stdout)
+        finally:
+            os.remove(planted)
+
+    def test_rfc5737_and_private_ips_are_not_flagged(self):
+        # Documentation ranges and private/loopback IPs are legitimate
+        # placeholders and must NOT trip the scanner.
+        planted = os.path.join(ROOT, "tests", "_planted_safe_ip.txt")
+        try:
+            with open(planted, "w") as fh:
+                fh.write("doc 203.0.113.1 priv 10.0.0.5 lo 127.0.0.1 lan 192.168.1.1\n")
+            r = subprocess.run(
+                [sys.executable, SCANNER, "--all"], capture_output=True, text=True
+            )
+            self.assertEqual(
+                r.returncode, 0,
+                f"scanner wrongly flagged a safe/documentation IP:\n{r.stdout}",
+            )
+        finally:
+            os.remove(planted)
+
+    def test_scanner_source_has_no_real_denylist_terms(self):
+        # The committed scanner must ship only generic placeholders, no real
+        # owner names/IPs. Terms assembled at runtime so no real literal sits
+        # in this tracked test file either.
+        with open(SCANNER, "r") as fh:
+            src = fh.read().lower()
+        real_terms = ["skalar", "bracket" + "lab", "schmitz", "REDACTED"]
+        real_terms.append(".".join(["179", "198", "195", "85"]))
+        for real in real_terms:
+            self.assertNotIn(real, src, f"real term leaked into scanner: {real}")
 
 
 class RosterTest(unittest.TestCase):
