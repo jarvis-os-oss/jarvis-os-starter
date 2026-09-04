@@ -27,7 +27,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENV_EXAMPLE = os.path.join(ROOT, ".env.example")
 ENV_PATH = os.path.join(ROOT, ".env")
 ROSTER_PATH = os.path.join(ROOT, "dashboard", "team_config.json")
-DEFAULT_UPSTREAM = "https://github.com/YOUR-ORG/jarvis-os-starter.git"
+DEFAULT_UPSTREAM = "https://github.com/jarvis-os-oss/jarvis-os-starter.git"
 
 
 def _parse_env_example(path):

@@ -28,11 +28,11 @@ personal data, no branding, no secrets. Fork it, name it, deploy it.
 
 ```bash
 # 1. Clone your fork
-git clone https://github.com/YOUR-ORG/jarvis-os-starter.git
+git clone https://github.com/jarvis-os-oss/jarvis-os-starter.git
 cd jarvis-os-starter
 
 # 2. Run onboarding (generates .env, asks for the values you need)
-python3 scripts/setup.py --upstream https://github.com/YOUR-ORG/jarvis-os-starter.git
+python3 scripts/setup.py --upstream https://github.com/jarvis-os-oss/jarvis-os-starter.git
 
 # 3. Review the generated .env (secrets are auto-generated, keys are placeholders)
 #    Fill in your LLM provider key and any domain.

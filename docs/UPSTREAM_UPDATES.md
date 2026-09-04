@@ -19,7 +19,7 @@ into any instance. An instance pulls when its operator chooses to.
 `scripts/setup.py` does this for you, or do it manually:
 
 ```
-git remote add upstream https://github.com/YOUR-ORG/jarvis-os-starter.git
+git remote add upstream https://github.com/jarvis-os-oss/jarvis-os-starter.git
 ```
 
 Set the correct URL with `--upstream` when running setup, or via the
