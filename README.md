@@ -109,8 +109,26 @@ CI (`.github/workflows/ci.yml`) runs the same three steps on every push and PR.
 - [`docs/UPSTREAM_UPDATES.md`](docs/UPSTREAM_UPDATES.md): one-way update model.
 - [`agents/README.md`](agents/README.md): the team charter.
 
-## Roadmap (Package 2, not included)
+## Optional agents (Package 2)
 
-Additional specialised roles (travel, shopping, style, health, finance, vehicle,
-marketing, design, and more) are intentionally out of scope for this starter
-kit. They can be added later from the agent template with no code change.
+Nine additional specialised agent templates ship in `agents/optional/`. They are
+NOT part of the base setup: import only the ones you need. Each is fully neutral
+(generic roles, placeholder examples, no personal data) and needs no code change
+to add, just a soul file and a roster entry in `dashboard/team_config.json`. See
+[`agents/optional/README.md`](agents/optional/README.md) for the full guide and a
+ready-to-paste roster snippet per module.
+
+| Module              | Role                          | Does                                                             | How to import |
+|---------------------|-------------------------------|-----------------------------------------------------------------|---------------|
+| Travel              | Travel Agent                  | Flights, hotels, trip logistics; books only on approval.        | `cp agents/optional/travel/SOUL.md agents/travel.SOUL.md` + roster entry |
+| Shopping            | Purchasing / Product Research | Product research and price comparison; buys only on approval.   | `cp agents/optional/shopping/SOUL.md agents/shopping.SOUL.md` + roster entry |
+| Style Advisor       | Style / Fashion & Interior    | Style profile and criteria; hands buying to the shopping agent. | `cp agents/optional/style-advisor/SOUL.md agents/style-advisor.SOUL.md` + roster entry |
+| Health Coach        | Habits & Wellbeing            | Habits and reminders; not medical advice.                       | `cp agents/optional/health-coach/SOUL.md agents/health-coach.SOUL.md` + roster entry |
+| Bookkeeping         | Accounts & Records            | Transactions, invoices, receipts, reconciliation.               | `cp agents/optional/bookkeeping/SOUL.md agents/bookkeeping.SOUL.md` + roster entry |
+| Finance Advisor     | Portfolio & Investment Review | Weighs options with pros and cons; no trades, no binding advice.| `cp agents/optional/finance-advisor/SOUL.md agents/finance-advisor.SOUL.md` + roster entry |
+| Vehicle Manager     | Fleet & Maintenance           | Vehicle records, service reminders, specs, workshop prep.       | `cp agents/optional/vehicle-manager/SOUL.md agents/vehicle-manager.SOUL.md` + roster entry |
+| Marketing Lead-Gen  | Campaigns & Lead Qualification| Campaign plans, draft outreach, lead scoring; sends on approval.| `cp agents/optional/marketing-leadgen/SOUL.md agents/marketing-leadgen.SOUL.md` + roster entry |
+| Design              | Brand & Visual Design         | Style guides, layouts, assets; hands build to the dev agent.    | `cp agents/optional/design/SOUL.md agents/design.SOUL.md` + roster entry |
+
+Each module's `README.md` carries the exact `team_config.json` snippet (with a
+suggested free port) and the agent's boundary rules.

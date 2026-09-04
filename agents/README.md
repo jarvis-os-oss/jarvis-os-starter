@@ -25,8 +25,12 @@ Ada writes code on `ada/*` branches and opens PRs. Scotty reviews, merges to
 `main`, and deploys. The same instance must not both write code and sign off on
 its security and stability. See `docs/BRANCH_PROTECTION.md`.
 
-## Extending the team (Package 2)
-Additional specialised roles (travel, shopping, style, health, finance, vehicle,
-marketing, design, and more) are intentionally out of scope for this starter
-kit. Add them later by dropping new SOUL files and roster entries. The
-architecture is fully data-driven, so no code change is needed to add an agent.
+## Optional agents (Package 2)
+Additional specialised roles (travel, shopping, style-advisor, health-coach,
+bookkeeping, finance-advisor, vehicle-manager, marketing-leadgen, design) ship as
+optional, importable modules in [`optional/`](optional/). They are not part of
+the base setup: import only the ones you need. Each has its own `SOUL.md` and an
+import `README.md`. The architecture is fully data-driven, so adding one needs no
+code change, just a soul file and a roster entry. See
+[`optional/README.md`](optional/README.md) for the overview and per-module
+instructions.
