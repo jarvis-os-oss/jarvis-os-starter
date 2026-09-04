@@ -1,0 +1,11 @@
+{
+  "_comment": "Cockpit team roster (generic seed for the JARVIS-OS Starter Kit). Fully data-driven: the cockpit UI and status probes read this file, so adding or renaming an agent needs no code change. Fields: key = Hermes profile name; name = display name; role/desc = shown in the UI; port = gateway API port (null = not deployed yet, status 'planned'); accent = UI accent colour token. No secrets, no personal data. Edit here or via scripts/setup.py to rename agents.",
+  "agents": [
+    {"key": "default", "name": "JARVIS", "role": "Chief of Staff / Orchestrator", "desc": "Takes requests, routes to the team, bundles results back.", "port": 8642, "accent": "gold"},
+    {"key": "assistant", "name": "Assistant", "role": "Admin / PA", "desc": "Inbox triage, calendar, reminders, briefings.", "port": 8644, "accent": "cyan"},
+    {"key": "scout", "name": "Scout", "role": "Research / Intelligence", "desc": "Market and competitor research, comparisons, fact-checks.", "port": 8645, "accent": "cyan"},
+    {"key": "ada", "name": "Ada", "role": "Development", "desc": "Builds tools and features on branches, opens PRs, never deploys.", "port": 8646, "accent": "cyan"},
+    {"key": "scotty", "name": "Scotty", "role": "DevOps, Security & Maintenance", "desc": "Infra, monitoring, updates, backups, reviews and deploys.", "port": 8647, "accent": "cyan"},
+    {"key": "pen", "name": "Pen", "role": "Content / Writing", "desc": "Drafts posts, articles and emails in the user's voice.", "port": 8655, "accent": "cyan"}
+  ]
+}

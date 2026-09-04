@@ -1,0 +1,38 @@
+# JARVIS-OS Starter Kit: base compose stack.
+#
+# This ships the cockpit dashboard as a container. Agent gateways run on the
+# Hermes runtime and are managed by infra/watchdog.sh (host-side), so they are
+# intentionally NOT modelled as services here. Add them as extra services once
+# your Hermes runtime image is defined.
+#
+# Secrets come from a local .env file (see .env.example). NEVER commit a real
+# .env. The compose file references variables by name only.
+
+services:
+  cockpit:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
+    image: jarvis-os-cockpit:latest
+    container_name: aios-cockpit
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    environment:
+      AIOS_HOME: /opt/aios
+      COCKPIT_PORT: "8517"
+    ports:
+      # Bind to loopback by default; expose publicly only behind a reverse
+      # proxy / tunnel that terminates TLS and adds access control.
+      - "127.0.0.1:8517:8517"
+    volumes:
+      # Persist logs and runtime state outside the image.
+      - aios_logs:/opt/aios/logs
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8517/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  aios_logs:

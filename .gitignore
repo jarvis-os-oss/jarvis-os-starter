@@ -1,0 +1,31 @@
+# Secrets and local runtime state (never commit these)
+.env
+*.env.local
+.cockpit_token
+*.key
+*.pem
+*.token
+secrets/
+.secrets/
+
+# Runtime artefacts
+logs/
+*.log
+*.db
+*.db-wal
+*.db-shm
+*.flag
+*.bak
+last.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
