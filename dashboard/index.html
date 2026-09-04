@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JARVIS-OS Cockpit</title>
+<style>
+  :root {
+    --bg: #0a0e17;
+    --panel: #0d1524;
+    --line: #1c2740;
+    --gold: #C6A15B;
+    --gold-bright: #e7c884;
+    --cyan: #4fd2e6;
+    --text: #d6dce8;
+    --muted: #7d8aa2;
+    --ok: #4fd28a;
+    --off: #e2545b;
+    --plan: #7d8aa2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
+  header {
+    padding: 20px 28px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 16px;
+  }
+  header h1 { margin: 0; font-size: 20px; letter-spacing: 3px; color: var(--gold-bright); font-weight: 700; }
+  header .sub { color: var(--muted); font-size: 13px; }
+  header .clock { margin-left: auto; color: var(--gold); font-variant-numeric: tabular-nums; }
+  main { padding: 24px 28px; max-width: 1100px; margin: 0 auto; }
+  h2 { font-size: 13px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin: 0 0 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px; display: flex; gap: 14px; align-items: center;
+  }
+  .card img { width: 52px; height: 52px; border-radius: 8px; flex: 0 0 auto; }
+  .card .name { font-weight: 700; color: var(--gold-bright); font-size: 15px; }
+  .card .role { color: var(--cyan); font-size: 12px; margin: 2px 0 6px; }
+  .card .desc { color: var(--muted); font-size: 12px; line-height: 1.35; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: middle; }
+  .running { background: var(--ok); }
+  .stopped { background: var(--off); }
+  .planned { background: var(--plan); }
+  .status { font-size: 11px; color: var(--muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 1px; }
+  footer { color: var(--muted); font-size: 11px; text-align: center; padding: 20px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>JARVIS-OS</h1>
+  <span class="sub" id="instance">Cockpit</span>
+  <span class="clock" id="clock">--:--</span>
+</header>
+<main>
+  <h2>Agent Team (<span id="count">0</span>)</h2>
+  <div class="grid" id="team"></div>
+</main>
+<footer>JARVIS-OS Starter Kit. Generic cockpit skeleton.</footer>
+<script>
+  const T = new URLSearchParams(location.search).get("t") || "";
+  const q = (p) => p + (p.includes("?") ? "&" : "?") + "t=" + encodeURIComponent(T);
+
+  async function loadData() {
+    try {
+      const r = await fetch(q("/api/data"));
+      if (!r.ok) return;
+      const d = await r.json();
+      document.getElementById("clock").textContent = d.time || "--:--";
+      document.getElementById("instance").textContent = (d.instance || "Cockpit") + " . " + (d.date || "");
+    } catch (e) {}
+  }
+
+  async function loadTeam() {
+    try {
+      const r = await fetch(q("/api/team"));
+      if (!r.ok) return;
+      const d = await r.json();
+      document.getElementById("count").textContent = d.count || 0;
+      const el = document.getElementById("team");
+      el.innerHTML = "";
+      (d.agents || []).forEach(a => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML =
+          '<img src="' + q("/avatar/" + a.key) + '" alt="">' +
+          '<div>' +
+            '<div class="name">' + a.name + '</div>' +
+            '<div class="role">' + a.role + '</div>' +
+            '<div class="desc">' + a.desc + '</div>' +
+            '<div class="status"><span class="dot ' + a.status + '"></span>' + a.status + '</div>' +
+          '</div>';
+        el.appendChild(card);
+      });
+    } catch (e) {}
+  }
+
+  function tick() { loadData(); loadTeam(); }
+  tick();
+  setInterval(tick, 15000);
+</script>
+</body>
+</html>
