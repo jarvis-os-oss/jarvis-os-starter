@@ -20,6 +20,10 @@ jobs:
         run: pip install -r dashboard/requirements.txt
 
       - name: Secret / PII scan (gate)
+        # Two independent layers: denylist literals (owner terms loaded from an
+        # untracked .scan_denylist.local) AND a structural pass over EVERY file
+        # incl. the scanner itself (routable public IPs + secret-shaped tokens),
+        # so a hardcoded real IP can never slip past the self-exclude again.
         run: python3 scripts/scan_secrets.py
 
       - name: Setup script smoke (non-interactive)
