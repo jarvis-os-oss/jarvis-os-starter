@@ -67,8 +67,15 @@ DENYLIST_DEFAULT = [
     "acme-inc",
     "your-company-name",
     "your-name-here",
-    "example.com",
 ]
+# Note: "example.com" is intentionally NOT denylisted. It is the RFC2606
+# reserved documentation domain, a legitimate placeholder (the shipped
+# .env.example uses cockpit.example.com by design, and setup.py copies that
+# value into the generated runtime .env). Flagging it produced false positives
+# and is inconsistent with is_public_ip(), which already treats the RFC5737
+# documentation IP ranges as safe placeholders. Real owner domains are caught
+# via the git-ignored .scan_denylist.local, and layer 2 still catches any
+# real secret regardless of denylist.
 
 # Any IPv4 literal, checked structurally against reserved ranges below.
 IPV4_RE = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
