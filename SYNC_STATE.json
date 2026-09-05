@@ -1,0 +1,10 @@
+{
+  "tracked_repo": "Skalar-Advisory-AI/jarvis-ai-os",
+  "tracked_branch": "main",
+  "last_checked_sha": "4e6a4a28b347f5487506aca936ba1bdd16a1e9ae",
+  "last_checked_at": "2026-09-05T09:18:08Z",
+  "last_run_at": "2026-09-05T09:18:08Z",
+  "runs": 0,
+  "note": "Versionsmanagement-Anker: letzter gegen jarvis-ai-os main gepruefter Commit. Wird taeglich von starterkit_sync.py fortgeschrieben.",
+  "history": []
+}
