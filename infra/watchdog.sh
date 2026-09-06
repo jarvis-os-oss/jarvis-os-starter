@@ -16,7 +16,11 @@ set -u
 : "${PYTHON_BIN:=python3}"
 : "${HERMES_BIN:=hermes}"
 # Space-separated list of Hermes profiles to keep always-on. "default" = JARVIS.
-: "${AIOS_AGENTS:=default assistant scout ada scotty pen}"
+# Ships with only "default" so a fresh install works out of the box. Create the
+# five base sub-agents with scripts/create_agent_profiles.sh, then set
+# AIOS_AGENTS (here or in infra/.env) to the profiles you actually created, e.g.
+#   AIOS_AGENTS="default assistant scout ada scotty pen"
+: "${AIOS_AGENTS:=default}"
 
 DASH_LOG="${AIOS_HOME}/logs/dashboard.log"
 mkdir -p "${AIOS_HOME}/logs" 2>/dev/null || true
@@ -44,7 +48,17 @@ if ! command -v "${HERMES_BIN}" >/dev/null 2>&1; then
   echo "      Non-root installs land in ~/.local/bin; set HERMES_BIN to the" >&2
   echo "      absolute path if it is not on PATH. See docs/HERMES_INSTALL.md." >&2
 else
+# Snapshot the profiles that actually exist so we never spin up a doomed gateway
+# for a profile that was never created (the watchdog would otherwise loop on it
+# forever). A missing profile is reported once, not treated as a hard failure.
+existing_profiles="$("${HERMES_BIN}" profile list 2>/dev/null || true)"
+missing=""
 for profile in ${AIOS_AGENTS}; do
+  # Match the profile name as a whole word in `hermes profile list` output.
+  if [ -n "${existing_profiles}" ] && ! echo "${existing_profiles}" | grep -qw -- "${profile}"; then
+    missing="${missing}${profile} "
+    continue
+  fi
   if ! "${HERMES_BIN}" -p "${profile}" gateway status 2>/dev/null | grep -q "is running"; then
     # run --replace: idempotent takeover of any stale gateway for this profile.
     nohup "${HERMES_BIN}" -p "${profile}" gateway run --replace \
@@ -57,5 +71,8 @@ fi
 
 if [ -n "${started}" ]; then
   echo "RESTARTED: ${started}"
+fi
+if [ -n "${missing:-}" ]; then
+  echo "SKIPPED (profile not found, create it first): ${missing}"
 fi
 # silent when all OK (watchdog pattern)
