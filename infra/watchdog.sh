@@ -33,6 +33,17 @@ if ! curl -s -o /dev/null --max-time 6 "http://127.0.0.1:${COCKPIT_PORT}${COCKPI
 fi
 
 # 2) Agent gateways ----------------------------------------------------------
+# Preflight: the gateways run on the Hermes runtime, not in the cockpit
+# container. If `hermes` is missing, every `gateway run` below fails and all
+# agents stay STOPPED. Warn once with a pointer instead of spamming
+# "hermes: command not found" into each gateway log, and skip the loop.
+if ! command -v "${HERMES_BIN}" >/dev/null 2>&1; then
+  echo "WARN: '${HERMES_BIN}' not found on PATH; skipping agent gateways." >&2
+  echo "      Install the Hermes runtime on this host, then re-run:" >&2
+  echo "        curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash" >&2
+  echo "      Non-root installs land in ~/.local/bin; set HERMES_BIN to the" >&2
+  echo "      absolute path if it is not on PATH. See docs/HERMES_INSTALL.md." >&2
+else
 for profile in ${AIOS_AGENTS}; do
   if ! "${HERMES_BIN}" -p "${profile}" gateway status 2>/dev/null | grep -q "is running"; then
     # run --replace: idempotent takeover of any stale gateway for this profile.
@@ -42,6 +53,7 @@ for profile in ${AIOS_AGENTS}; do
     sleep 2
   fi
 done
+fi
 
 if [ -n "${started}" ]; then
   echo "RESTARTED: ${started}"

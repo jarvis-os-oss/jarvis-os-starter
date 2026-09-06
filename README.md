@@ -42,11 +42,25 @@ docker compose -f infra/docker-compose.yml up -d --build
 
 # 5. Open the cockpit (token is the COCKPIT_TOKEN from your .env)
 #    http://127.0.0.1:8517/?t=<COCKPIT_TOKEN>
+
+# 6. Install the Hermes runtime the agent gateways run on (once, on the host).
+#    Without this, the watchdog fails with "hermes: command not found".
+#    See docs/HERMES_INSTALL.md for details and platform notes.
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+hash -r && hermes --version
+
+# 7. Start and supervise the agent gateways (run from cron every few minutes)
+bash infra/watchdog.sh
 ```
 
 The agent gateways run on the Hermes runtime (one profile per agent) and are
-kept alive by `infra/watchdog.sh`. Point the watchdog at your install with the
-`AIOS_HOME` and `AIOS_AGENTS` environment variables and run it from cron.
+kept alive by `infra/watchdog.sh`. Hermes is a separate, free, open-source
+runtime that you install on the host once; the kit does not bundle it. Install
+it **before** the first watchdog run (step 6 above) or the watchdog aborts with
+`hermes: command not found` and every agent stays `STOPPED`. See
+[`docs/HERMES_INSTALL.md`](docs/HERMES_INSTALL.md) for the full install and a
+`HERMES_BIN` note for non-root installs. Point the watchdog at your install with
+the `AIOS_HOME` and `AIOS_AGENTS` environment variables and run it from cron.
 
 ## The setup script
 
