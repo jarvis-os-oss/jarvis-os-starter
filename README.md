@@ -123,11 +123,42 @@ AGENTS="assistant scout" scripts/create_agent_profiles.sh
 hermes profile list
 ```
 
+### One Telegram bot per agent (required)
+
+Cloning copies `default`'s `.env`, including its `TELEGRAM_BOT_TOKEN`. Telegram
+allows only **one** gateway to connect with a given bot token at a time (one bot
+= one active client). If every profile kept `default`'s token, all six gateways
+would fight over the same bot: only one stays `RUNNING` and Hermes silently
+hands the token off between them
+(`Telegram bot token was held by gateway PID X ... handoff completed`), leaving
+the rest `STOPPED`. This is a quiet race, not a loud error, so it is easy to
+miss.
+
+To prevent it, `create_agent_profiles.sh` **clears** the inherited
+`TELEGRAM_BOT_TOKEN` in every profile it creates. Before you start the
+watchdog, give each sub-agent its **own** bot:
+
+1. In Telegram, talk to [@BotFather](https://t.me/BotFather) and run `/newbot`
+   once per sub-agent (pick any name and handle).
+2. Paste each bot's token into that profile's `.env`:
+
+   ```
+   ~/.hermes/profiles/assistant/.env   ->   TELEGRAM_BOT_TOKEN=...
+   ~/.hermes/profiles/scout/.env       ->   TELEGRAM_BOT_TOKEN=...
+   ~/.hermes/profiles/ada/.env         ->   TELEGRAM_BOT_TOKEN=...
+   ~/.hermes/profiles/scotty/.env      ->   TELEGRAM_BOT_TOKEN=...
+   ~/.hermes/profiles/pen/.env         ->   TELEGRAM_BOT_TOKEN=...
+   ```
+
 Then widen the watchdog to the profiles you created, in `infra/.env`:
 
 ```
 AIOS_AGENTS=default assistant scout ada scotty pen
 ```
+
+Start the watchdog **after** every profile has its own token
+(`bash infra/watchdog.sh`); otherwise the profiles without a distinct token will
+still race and stay `STOPPED`.
 
 The single generic command behind the script is:
 
