@@ -85,12 +85,16 @@ class ScanSecretsTest(unittest.TestCase):
 
     def test_scanner_source_has_no_real_denylist_terms(self):
         # The committed scanner must ship only generic placeholders, no real
-        # owner names/IPs. Terms assembled at runtime so no real literal sits
-        # in this tracked test file either.
+        # owner names/IPs. These are neutral, fictional stand-ins that represent
+        # the SHAPE of owner-specific terms (company, product, surname, infra
+        # IP); each instance's real terms live only in the git-ignored
+        # .scan_denylist.local and must never appear in this tracked scanner.
         with open(SCANNER, "r") as fh:
             src = fh.read().lower()
-        real_terms = ["skalar", "bracket" + "lab", "schmitz", "REDACTED"]
-        real_terms.append(".".join(["179", "198", "195", "85"]))
+        real_terms = ["contoso", "fabri" + "kam", "mustermann"]
+        # A private-range canary IP (RFC1918): stands in for a real infra IP
+        # without itself being a routable public address.
+        real_terms.append(".".join(["10", "11", "12", "13"]))
         for real in real_terms:
             self.assertNotIn(real, src, f"real term leaked into scanner: {real}")
 
