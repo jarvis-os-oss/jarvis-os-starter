@@ -5,18 +5,40 @@ Additive by design: registers its own Flask blueprint and reuses the cockpit
 token gate. The roster is read from ``team_config.json`` so adding or renaming
 an agent needs no code change.
 
-No personal data and no secrets live here. Liveness is a cheap TCP connect to
-the gateway port, never an LLM call.
+No personal data and no secrets live here.
+
+LIVENESS
+--------
+Two sources, in order of preference:
+
+1. A host-written status file (``AIOS_STATUS_FILE``, default
+   ``/opt/aios/logs/agent_status.json``) produced by ``collect_status.py``.
+   That collector reads each Hermes profile's ``gateway_state.json`` and
+   confirms the pid is alive, so it reports true gateway liveness even when the
+   gateways do not expose an HTTP api_server port. This is the reliable default
+   for the starter kit, whose gateways run headless (Telegram etc.) with no TCP
+   port to probe. The file is used only while fresh; a stale or missing file
+   falls through to (2).
+
+2. A cheap TCP connect to the gateway port (legacy behaviour). Works only when
+   a gateway exposes ``api_server`` on that port and the cockpit can reach it.
+   Kept as a fallback so deployments that do expose ports still work with no
+   collector running.
 """
 
 import os
 import json
+import time
 import socket
 
 from flask import Blueprint, jsonify, request, send_file, Response
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROSTER_PATH = os.path.join(BASE_DIR, "team_config.json")
+STATUS_FILE = os.environ.get("AIOS_STATUS_FILE", "/opt/aios/logs/agent_status.json")
+# Max age of the status file before the cockpit distrusts it and falls back to
+# the TCP probe. The collector is expected to run at least this often.
+STATUS_MAX_AGE = int(os.environ.get("AIOS_STATUS_MAX_AGE", "180"))
 
 team_bp = Blueprint("team", __name__)
 
@@ -51,12 +73,29 @@ def load_roster(path=ROSTER_PATH):
         return []
 
 
+def load_status_file(path=STATUS_FILE, max_age=STATUS_MAX_AGE):
+    """Return {key: status} from the host status file, or {} if unusable.
+
+    Returns an empty dict on any problem (missing, malformed, or stale), which
+    makes the caller fall back to the TCP probe. Never raises.
+    """
+    try:
+        with open(path) as fh:
+            data = json.load(fh)
+        generated = float(data.get("generated_at", 0))
+        if max_age > 0 and (time.time() - generated) > max_age:
+            return {}
+        agents = data.get("agents", {})
+        return agents if isinstance(agents, dict) else {}
+    except Exception:
+        return {}
+
+
 def probe_status(port, host="127.0.0.1", timeout=0.4):
-    """Cheap liveness probe for an agent gateway.
+    """Cheap TCP liveness probe for an agent gateway (fallback).
 
     Returns 'running' when the TCP port accepts a connection, 'stopped' when it
     refuses, and 'planned' when no port is configured (agent not yet deployed).
-    A plain TCP connect avoids spending an LLM API call just to render a dot.
     """
     if not port:
         return "planned"
@@ -71,6 +110,20 @@ def probe_status(port, host="127.0.0.1", timeout=0.4):
             s.close()
         except Exception:
             pass
+
+
+def resolve_status(agent, status_map):
+    """Pick the best liveness verdict for one agent.
+
+    Prefers the host status file (reliable for headless gateways); falls back
+    to the TCP probe when the file has no verdict for this agent.
+    """
+    if not agent.get("port"):
+        return "planned"
+    key = agent.get("key")
+    if key in status_map and status_map[key] in ("running", "stopped", "planned"):
+        return status_map[key]
+    return probe_status(agent.get("port"))
 
 
 def _monogram_svg(agent):
@@ -104,6 +157,7 @@ def api_team():
     if not _authorized():
         return jsonify({"error": "unauthorized"}), 401
     roster = load_roster()
+    status_map = load_status_file()
     out = []
     for a in roster:
         out.append({
@@ -113,7 +167,7 @@ def api_team():
             "desc": a.get("desc", ""),
             "accent": a.get("accent", "cyan"),
             "port": a.get("port"),
-            "status": probe_status(a.get("port")),
+            "status": resolve_status(a, status_map),
         })
     return jsonify({"agents": out, "count": len(out)})
 
