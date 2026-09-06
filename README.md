@@ -49,7 +49,12 @@ docker compose -f infra/docker-compose.yml up -d --build
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 hash -r && hermes --version
 
-# 7. Start and supervise the agent gateways (run from cron every few minutes)
+# 7. Create the base sub-agent profiles (non-interactive, clones "default").
+#    One-off. Skip to run JARVIS-only for now (AIOS_AGENTS=default).
+scripts/create_agent_profiles.sh
+#    then set AIOS_AGENTS=default assistant scout ada scotty pen in .env
+
+# 8. Start and supervise the agent gateways (run from cron every few minutes)
 bash infra/watchdog.sh
 ```
 
@@ -96,6 +101,46 @@ The system is data-driven. To add or change an agent:
 
 No code change is needed. The cockpit and status probes pick it up from the
 roster.
+
+## Creating the agent profiles
+
+Each agent runs as its own Hermes profile. `hermes setup` (see step 6) creates
+only the `default` profile, which is JARVIS itself. The five base sub-agents
+(`assistant`, `scout`, `ada`, `scotty`, `pen`) are created separately. There is
+no need to run the interactive setup wizard five more times:
+`scripts/create_agent_profiles.sh` clones the already-configured `default`
+profile, so every sub-agent inherits the same provider, model, and API key
+non-interactively.
+
+```bash
+# Create all five base sub-agents (idempotent, skips any that already exist)
+scripts/create_agent_profiles.sh
+
+# Or a custom subset
+AGENTS="assistant scout" scripts/create_agent_profiles.sh
+
+# Verify
+hermes profile list
+```
+
+Then widen the watchdog to the profiles you created, in `infra/.env`:
+
+```
+AIOS_AGENTS=default assistant scout ada scotty pen
+```
+
+The single generic command behind the script is:
+
+```bash
+hermes profile create <name> --clone-from default --description "<role>"
+```
+
+Cloned profiles share `default`'s SOUL.md (JARVIS). To give each a distinct
+role, copy its charter soul file over the profile's `SOUL.md`, e.g.
+`agents/scout.SOUL.md` -> the `scout` profile's `SOUL.md`.
+
+Prefer JARVIS-only for now? Leave `AIOS_AGENTS=default`. The watchdog reports any
+listed-but-missing profile once and keeps running instead of looping on it.
 
 ## Testing and CI
 
