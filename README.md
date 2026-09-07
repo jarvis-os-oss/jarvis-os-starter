@@ -56,6 +56,10 @@ scripts/create_agent_profiles.sh
 
 # 8. Start and supervise the agent gateways (run from cron every few minutes)
 bash infra/watchdog.sh
+
+# 9. Before leaving the team running unattended, walk the go-live checklist.
+#    See docs/GOING_LIVE.md (allow-lists, secrets, loopback, draft-never-send,
+#    and how to stop it). If anything looks off, run: hermes doctor
 ```
 
 The agent gateways run on the Hermes runtime (one profile per agent) and are
@@ -195,9 +199,15 @@ CI (`.github/workflows/ci.yml`) runs the same three steps on every push and PR.
 ## Documentation
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): components and data flow.
+- [`docs/GOING_LIVE.md`](docs/GOING_LIVE.md): the five-check go-live safety
+  checklist before the team runs unattended.
+- [`docs/HERMES_INSTALL.md`](docs/HERMES_INSTALL.md): install the runtime and the
+  `hermes doctor` self-test.
 - [`docs/BRANCH_PROTECTION.md`](docs/BRANCH_PROTECTION.md): PR workflow and roles.
 - [`docs/UPSTREAM_UPDATES.md`](docs/UPSTREAM_UPDATES.md): one-way update model.
-- [`agents/README.md`](agents/README.md): the team charter.
+- [`agents/README.md`](agents/README.md): the team charter and soul-length note.
+- [`agents/ONBOARDING_INTERVIEW.md`](agents/ONBOARDING_INTERVIEW.md): interview
+  prompt to draft a new agent's `SOUL.md`.
 
 ## Optional agents (Package 2)
 

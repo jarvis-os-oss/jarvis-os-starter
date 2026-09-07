@@ -14,6 +14,28 @@ any agent by editing its `agents/<key>.SOUL.md` and the roster entry in
 | scotty    | Scotty    | DevOps, Security & Maintenance| Infra, monitoring, updates, backups, reviews and deploys.  |
 | pen       | Pen       | Content / Writing             | Drafts posts, articles, emails in the user's voice.        |
 
+## Keep each SOUL.md short
+
+A `SOUL.md` is sent to the model on **every single turn**, so every character in
+it is paid for on every response, forever. Keep souls lean: persona, tone, and
+hard rules only. Anything longer (facts about the user, standing procedures)
+belongs in `memories/USER.md`, `memories/MEMORY.md`, or a skill, not the soul.
+The base souls here run roughly 1200 to 2000 characters; treat that as the
+normal band and check any file with:
+
+```bash
+wc -c agents/*.SOUL.md
+```
+
+If one grows well past the others, move the excess into memory or a skill.
+
+## Adding an agent by interview
+
+You can write a new soul freehand from `_TEMPLATE.SOUL.md`, or let a Hermes chat
+interview you and draft it. The structured interview forces a sharp scope and an
+explicit list of what the agent must never do without approval. See
+[`ONBOARDING_INTERVIEW.md`](ONBOARDING_INTERVIEW.md) for the copy-paste prompt.
+
 ## Delegation model
 1. JARVIS receives the request.
 2. JARVIS routes each subtask to the fitting specialist.
