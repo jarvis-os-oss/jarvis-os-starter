@@ -80,3 +80,16 @@ the installer; see the upstream
 [FAQ](https://hermes-agent.nousresearch.com/docs/reference/faq) and
 [installation guide](https://hermes-agent.nousresearch.com/docs/getting-started/installation)
 for `hermes: command not found` troubleshooting.
+
+## First diagnostic: `hermes doctor`
+
+Whenever anything looks wrong (install, config, provider key, or channel), reach
+for the runtime self-test before reading logs by hand:
+
+```bash
+hermes doctor              # checks the default profile / runtime
+hermes -p <profile> doctor # checks one agent profile, e.g. scout
+```
+
+It reports install, configuration, model, and channel problems in one place and
+is the fastest way to tell a missing key from a broken gateway.
