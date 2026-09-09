@@ -11,19 +11,19 @@ commits, changes land only through reviewed pull requests.
   (`test` job). This makes the secret scan and tests a hard gate.
 - Require branches to be up to date before merging.
 - Do not allow bypassing the above settings (include administrators).
-- Restrict who can push to matching branches (the deploy/DevOps identity only).
+- Restrict who can push to matching branches (the deploy/maintenance identity only).
 
 ## Workflow
 
-1. The Dev agent works on a feature branch: `ada/<short-feature-desc>`.
-2. It opens a PR against `main` and reports the branch to the DevOps agent.
+1. The developer agent works on a feature branch: `dev/<short-feature-desc>`.
+2. It opens a PR against `main` and reports the branch to the maintenance agent.
 3. CI runs the secret/PII scan and the test suite on the PR.
-4. The DevOps agent reviews, and only then merges to `main` and deploys.
+4. The maintenance agent reviews, and only then merges to `main` and deploys.
 
 The instance that writes the code must not be the instance that signs off on its
 security and deployment. That separation is deliberate.
 
 ## One-line reminder for the roles
 
-- Dev agent (Ada): build on `ada/*`, open PR, never merge own work, never deploy.
-- DevOps agent (Scotty): review, merge, deploy. Only holder of production access.
+- Developer agent: build on `dev/*`, open PR, never merge own work, never deploy.
+- Maintenance agent: review, merge, deploy. Only holder of production access.

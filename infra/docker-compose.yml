@@ -1,4 +1,4 @@
-# JARVIS-OS Starter Kit: base compose stack.
+# AI-OS Starter Kit: base compose stack.
 #
 # This ships the cockpit dashboard as a container. Agent gateways run on the
 # Hermes runtime and are managed by infra/watchdog.sh (host-side), so they are
@@ -13,7 +13,7 @@ services:
     build:
       context: ..
       dockerfile: infra/Dockerfile
-    image: jarvis-os-cockpit:latest
+    image: aios-cockpit:latest
     container_name: aios-cockpit
     restart: unless-stopped
     env_file:

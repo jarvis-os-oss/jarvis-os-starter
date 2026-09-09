@@ -3,7 +3,7 @@
 The kit is data-driven: a new agent is a `SOUL.md` plus a roster entry in
 `dashboard/team_config.json` (see the README "Customising the team"). You can
 write the `SOUL.md` by hand from `agents/_TEMPLATE.SOUL.md`. This file offers a
-faster, more reliable path: let JARVIS (or any Hermes chat) **interview you**
+faster, more reliable path: let the orchestrator (or any Hermes chat) **interview you**
 and draft the soul file, instead of filling a template freehand.
 
 Why an interview instead of freehand: the template's angle-bracket fields are
@@ -19,28 +19,29 @@ questions one at a time in plain language. At the end you get a `SOUL.md` and a
 roster snippet to review before anything is written.
 
 This defines **one sub-agent** at a time. Keep the team's shape in mind: every
-agent reports to JARVIS, hands off through JARVIS, and never both writes code and
-signs off on its own deployment (the Ada/Scotty split in
-`docs/BRANCH_PROTECTION.md`).
+agent reports to the orchestrator, hands off through the orchestrator, and never
+both writes code and signs off on its own deployment (the developer/maintenance
+split in `docs/BRANCH_PROTECTION.md`).
 
 ## The interview prompt (copy this)
 
 ```
-You are helping me add one new sub-agent to a JARVIS-OS team. JARVIS is the
-orchestrator; every sub-agent takes work from JARVIS, reports back to JARVIS,
-and pulls in other agents only through JARVIS. Before writing anything, INTERVIEW
+You are helping me add one new sub-agent to an AI-OS team. One coordinator (the
+orchestrator) runs the team; every sub-agent takes work from the orchestrator,
+reports back to it, and pulls in other agents only through it. Before writing
+anything, INTERVIEW
 me. Ask these questions ONE at a time and wait for my answer after each:
 
 1. What is this agent's name and its one-line role, the way you would introduce
    a new hire to the team?
 2. What does it own day to day? List the concrete tasks that are clearly its job.
 3. What is explicitly NOT its job, so it hands those off to another agent
-   through JARVIS instead of doing them itself?
+   through the orchestrator instead of doing them itself?
 4. How should it work: which tools, conventions, and (if it changes systems) what
    branch, handoff, or review steps does it follow?
 5. What must it NEVER do without my explicit approval (send, publish, spend,
    book, delete, deploy)?
-6. When should it stop and escalate to JARVIS rather than decide on its own?
+6. When should it stop and escalate to the orchestrator rather than decide on its own?
 7. How should it talk: terse and factual, or fuller with reasoning? Any severity
    tags or format it should always use?
 8. What free port should its cockpit roster entry use, and what accent colour?

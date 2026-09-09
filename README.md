@@ -1,26 +1,32 @@
-# JARVIS-OS Starter Kit
+# AI-OS Starter Kit
 
 A neutral, reusable starting point for building an AI operating system: one
-orchestrator agent (JARVIS) that coordinates a team of specialised sub-agents,
-plus a token-gated cockpit dashboard and the infrastructure to run it. No
-personal data, no branding, no secrets. Fork it, name it, deploy it.
+orchestrator agent that coordinates a team of specialised sub-agents, plus a
+token-gated cockpit dashboard and the infrastructure to run it. No personal
+data, no branding, no secrets. Fork it, name it, deploy it.
+
+Agents ship with generic ROLE names (orchestrator, researcher, developer, ...).
+You give each one your own name in the naming step during setup, so the examples
+below are just defaults.
 
 ## What you get
 
-- **JARVIS orchestrator** (`agents/jarvis.SOUL.md`): takes requests, routes to
+- **Orchestrator** (`agents/orchestrator.SOUL.md`): takes requests, routes to
   the team, merges results back.
-- **5 base sub-agents** (generic templates):
+- **5 base sub-agents** (generic role templates):
   - **Assistant** (Admin / PA): inbox triage, calendar, reminders, briefings.
-  - **Scout** (Research): market and competitor research, comparisons, fact-checks.
-  - **Ada** (Development): builds tools and features on branches, opens PRs, never deploys.
-  - **Scotty** (DevOps / Security): infra, monitoring, backups, reviews and deploys.
-  - **Pen** (Content): drafts posts, articles, and emails in the user's voice.
+  - **Researcher** (Research): market and competitor research, comparisons, fact-checks.
+  - **Developer** (Development): builds tools and features on branches, opens PRs, never deploys.
+  - **Maintenance** (DevOps / Security): infra, monitoring, backups, reviews and deploys.
+  - **Writer** (Content): drafts posts, articles, and emails in the user's voice.
 - **Agent template** (`agents/_TEMPLATE.SOUL.md`) to add your own roles.
 - **Cockpit dashboard** (`dashboard/`): token-gated Flask UI + API, data-driven
   agent roster with live status.
 - **Infrastructure** (`infra/`): idempotent watchdog, Docker Compose, Dockerfile.
-- **Onboarding** (`scripts/setup.py`): generates `.env`, renames agents, wires
+- **Onboarding** (`scripts/setup.py`): generates `.env`, names your agents, wires
   the upstream remote.
+- **Naming step** (`scripts/name_agents.py`): give each agent your own name; the
+  personas and roster update together.
 - **Security gate** (`scripts/scan_secrets.py` + CI): fails the build on any
   secret-shaped or denylisted token.
 
@@ -31,35 +37,41 @@ personal data, no branding, no secrets. Fork it, name it, deploy it.
 git clone https://github.com/jarvis-os-oss/jarvis-os-starter.git
 cd jarvis-os-starter
 
-# 2. Run onboarding (generates .env, asks for the values you need)
+# 2. Run onboarding (generates .env, names your agents, asks for the values you need)
 python3 scripts/setup.py --upstream https://github.com/jarvis-os-oss/jarvis-os-starter.git
 
-# 3. Review the generated .env (secrets are auto-generated, keys are placeholders)
+# 3. Name your agents (also runnable on its own, any time).
+#    Copy the map, edit the names you want, then apply. Enter/omit = role default.
+cp agents/names.example agents/names.local
+#    edit agents/names.local, then:
+python3 scripts/name_agents.py
+
+# 4. Review the generated .env (secrets are auto-generated, keys are placeholders)
 #    Fill in your LLM provider key and any domain.
 
-# 4. Build and run the cockpit
+# 5. Build and run the cockpit
 docker compose -f infra/docker-compose.yml up -d --build
 
-# 5. Open the cockpit (token is the COCKPIT_TOKEN from your .env)
+# 6. Open the cockpit (token is the COCKPIT_TOKEN from your .env)
 #    http://127.0.0.1:8517/?t=<COCKPIT_TOKEN>
 
-# 6. Install the Hermes runtime the agent gateways run on (once, on the host).
+# 7. Install the Hermes runtime the agent gateways run on (once, on the host).
 #    Without this, the watchdog fails with "hermes: command not found".
 #    See docs/HERMES_INSTALL.md for details and platform notes.
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 hash -r && hermes --version
 
-# 7. Create the base sub-agent profiles (non-interactive, clones "default").
-#    One-off. Skip to run JARVIS-only for now (AIOS_AGENTS=default).
+# 8. Create the base sub-agent profiles (non-interactive, clones "default").
+#    One-off. Skip to run orchestrator-only for now (AIOS_AGENTS=default).
 scripts/create_agent_profiles.sh
-#    then set AIOS_AGENTS=default assistant scout ada scotty pen in .env
+#    then set AIOS_AGENTS=default assistant researcher developer maintenance writer in .env
 
-# 8. Start and supervise the agent gateways (run from cron every few minutes)
+# 9. Start and supervise the agent gateways (run from cron every few minutes)
 bash infra/watchdog.sh
 
-# 9. Before leaving the team running unattended, walk the go-live checklist.
-#    See docs/GOING_LIVE.md (allow-lists, secrets, loopback, draft-never-send,
-#    and how to stop it). If anything looks off, run: hermes doctor
+# 10. Before leaving the team running unattended, walk the go-live checklist.
+#     See docs/GOING_LIVE.md (allow-lists, secrets, loopback, draft-never-send,
+#     and how to stop it). If anything looks off, run: hermes doctor
 ```
 
 The agent gateways run on the Hermes runtime (one profile per agent) and are
@@ -80,9 +92,28 @@ the `AIOS_HOME` and `AIOS_AGENTS` environment variables and run it from cron.
   placeholder secret is ever shipped.
 - `--non-interactive`: fills everything from environment variables or defaults
   (CI-safe). Any value can be pre-set via an env var of the same name.
-- Optionally renames agent display names in `dashboard/team_config.json`.
+- Runs the naming step so every agent gets a display name (see below).
 - Wires the `upstream` git remote (`--upstream <url>` or `UPSTREAM_URL`).
 - `--force` to regenerate an existing `.env`.
+
+## Naming your agents
+
+Agents ship with generic role names (Orchestrator, Researcher, Developer,
+Maintenance, Writer, Assistant). Give each one your own name in one step:
+
+```bash
+cp agents/names.example agents/names.local   # first time only
+# edit agents/names.local: "<key> = <Your name>", e.g.  developer = Ada
+python3 scripts/name_agents.py
+```
+
+This fills the `{{AGENT_NAME}}` placeholder in each `agents/<role>.SOUL.md` and
+updates the matching `name` in `dashboard/team_config.json`. It is idempotent:
+change a name and re-run. `scripts/setup.py` runs it for you on first setup, and
+`agents/names.local` is git-ignored so your chosen names never leave your
+instance. To keep the neutral role names, just skip editing the map. Verify with
+`python3 scripts/name_agents.py --check` (non-zero exit if any persona still has
+an unresolved placeholder).
 
 ## Updating from upstream
 
@@ -100,28 +131,28 @@ docker compose -f infra/docker-compose.yml up -d --build
 The system is data-driven. To add or change an agent:
 
 1. Copy `agents/_TEMPLATE.SOUL.md` to `agents/<key>.SOUL.md` and fill it in.
-2. Add a matching entry to `dashboard/team_config.json` (key, name, role, desc,
-   port).
+2. Add a matching entry to `dashboard/team_config.json` (key, soul, name, role,
+   desc, port).
 
 No code change is needed. The cockpit and status probes pick it up from the
 roster.
 
 ## Creating the agent profiles
 
-Each agent runs as its own Hermes profile. `hermes setup` (see step 6) creates
-only the `default` profile, which is JARVIS itself. The five base sub-agents
-(`assistant`, `scout`, `ada`, `scotty`, `pen`) are created separately. There is
-no need to run the interactive setup wizard five more times:
-`scripts/create_agent_profiles.sh` clones the already-configured `default`
-profile, so every sub-agent inherits the same provider, model, and API key
-non-interactively.
+Each agent runs as its own Hermes profile. `hermes setup` (see step 7) creates
+only the `default` profile, which is the orchestrator itself. The five base
+sub-agents (`assistant`, `researcher`, `developer`, `maintenance`, `writer`) are
+created separately. There is no need to run the interactive setup wizard five
+more times: `scripts/create_agent_profiles.sh` clones the already-configured
+`default` profile, so every sub-agent inherits the same provider, model, and API
+key non-interactively.
 
 ```bash
 # Create all five base sub-agents (idempotent, skips any that already exist)
 scripts/create_agent_profiles.sh
 
 # Or a custom subset
-AGENTS="assistant scout" scripts/create_agent_profiles.sh
+AGENTS="assistant researcher" scripts/create_agent_profiles.sh
 
 # Verify
 hermes profile list
@@ -147,17 +178,17 @@ watchdog, give each sub-agent its **own** bot:
 2. Paste each bot's token into that profile's `.env`:
 
    ```
-   ~/.hermes/profiles/assistant/.env   ->   TELEGRAM_BOT_TOKEN=...
-   ~/.hermes/profiles/scout/.env       ->   TELEGRAM_BOT_TOKEN=...
-   ~/.hermes/profiles/ada/.env         ->   TELEGRAM_BOT_TOKEN=...
-   ~/.hermes/profiles/scotty/.env      ->   TELEGRAM_BOT_TOKEN=...
-   ~/.hermes/profiles/pen/.env         ->   TELEGRAM_BOT_TOKEN=...
+   ~/.hermes/profiles/assistant/.env     ->   TELEGRAM_BOT_TOKEN=...
+   ~/.hermes/profiles/researcher/.env    ->   TELEGRAM_BOT_TOKEN=...
+   ~/.hermes/profiles/developer/.env     ->   TELEGRAM_BOT_TOKEN=...
+   ~/.hermes/profiles/maintenance/.env   ->   TELEGRAM_BOT_TOKEN=...
+   ~/.hermes/profiles/writer/.env        ->   TELEGRAM_BOT_TOKEN=...
    ```
 
 Then widen the watchdog to the profiles you created, in `infra/.env`:
 
 ```
-AIOS_AGENTS=default assistant scout ada scotty pen
+AIOS_AGENTS=default assistant researcher developer maintenance writer
 ```
 
 Start the watchdog **after** every profile has its own token
@@ -170,19 +201,20 @@ The single generic command behind the script is:
 hermes profile create <name> --clone-from default --description "<role>"
 ```
 
-Cloned profiles share `default`'s SOUL.md (JARVIS). To give each a distinct
-role, copy its charter soul file over the profile's `SOUL.md`, e.g.
-`agents/scout.SOUL.md` -> the `scout` profile's `SOUL.md`.
+Cloned profiles share `default`'s SOUL.md (the orchestrator). To give each a
+distinct role, copy its charter soul file over the profile's `SOUL.md`, e.g.
+`agents/researcher.SOUL.md` -> the `researcher` profile's `SOUL.md`.
 
-Prefer JARVIS-only for now? Leave `AIOS_AGENTS=default`. The watchdog reports any
-listed-but-missing profile once and keeps running instead of looping on it.
+Prefer orchestrator-only for now? Leave `AIOS_AGENTS=default`. The watchdog
+reports any listed-but-missing profile once and keeps running instead of looping
+on it.
 
 ## Testing and CI
 
 ```bash
 pip install -r dashboard/requirements.txt
 python3 scripts/scan_secrets.py                 # secret / PII gate
-python3 scripts/setup.py --non-interactive --skip-upstream --skip-rename --force
+python3 scripts/setup.py --non-interactive --skip-upstream --force
 python3 -m unittest discover -s tests -v        # unit + cockpit smoke tests
 ```
 
@@ -193,11 +225,13 @@ CI (`.github/workflows/ci.yml`) runs the same three steps on every push and PR.
 - Cockpit token-gated on every route except `/api/health`. Serve behind TLS.
 - Secrets live in `.env` (git-ignored) and on the host, never in the repo.
 - `main` is protected: changes land only via reviewed PRs. The agent that writes
-  code (Ada) does not deploy it, the DevOps agent (Scotty) reviews and deploys.
-  See [`docs/BRANCH_PROTECTION.md`](docs/BRANCH_PROTECTION.md).
+  code (the developer) does not deploy it, the maintenance agent reviews and
+  deploys. See [`docs/BRANCH_PROTECTION.md`](docs/BRANCH_PROTECTION.md).
 
 ## Documentation
 
+- [`CONTRIBUTING.md`](CONTRIBUTING.md): the bot git-identity rule and the
+  pre-push guard that keeps real names out of commit metadata (public repo).
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): components and data flow.
 - [`docs/GOING_LIVE.md`](docs/GOING_LIVE.md): the five-check go-live safety
   checklist before the team runs unattended.

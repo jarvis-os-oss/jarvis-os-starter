@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Create the base sub-agent Hermes profiles for a fresh JARVIS-OS install.
+# Create the base sub-agent Hermes profiles for a fresh AI-OS install.
 #
 # `hermes setup` (or the starter kit's own onboarding) creates only the
-# "default" profile, which is JARVIS itself. The team charter also names five
-# sub-agents (assistant, scout, ada, scotty, pen). This script creates them
+# "default" profile, which is the orchestrator itself. The team charter also names five
+# sub-agents (assistant, researcher, developer, maintenance, writer). This script
+# creates them
 # non-interactively by cloning the already-configured "default" profile, so each
 # new profile inherits the same provider, model, and API keys and needs NO extra
 # interactive setup wizard.
@@ -21,18 +22,18 @@
 #
 # Usage:
 #   scripts/create_agent_profiles.sh                 # creates the 5 defaults
-#   AGENTS="assistant scout" scripts/create_agent_profiles.sh   # custom subset
+#   AGENTS="assistant researcher" scripts/create_agent_profiles.sh   # custom subset
 #   HERMES_BIN=/usr/local/bin/hermes scripts/create_agent_profiles.sh
 #
 # After running, give each profile its own bot token (see the closing notice),
 # then point the watchdog at them:
-#   AIOS_AGENTS="default assistant scout ada scotty pen"   (in infra/.env)
+#   AIOS_AGENTS="default assistant researcher developer maintenance writer"   (in infra/.env)
 set -u
 
 : "${HERMES_BIN:=hermes}"
 # Which sub-agent profiles to create. "default" is created by `hermes setup`,
 # so it is intentionally NOT in this list.
-: "${AGENTS:=assistant scout ada scotty pen}"
+: "${AGENTS:=assistant researcher developer maintenance writer}"
 # Profile to clone provider/model/keys from. Must already be set up.
 : "${CLONE_FROM:=default}"
 
@@ -97,7 +98,7 @@ for profile in ${AGENTS}; do
   # config.yaml, .env, SOUL.md and skills from the source profile.
   if "${HERMES_BIN}" profile create "${profile}" \
         --clone-from "${CLONE_FROM}" \
-        --description "JARVIS-OS base sub-agent (${profile})" \
+        --description "AI-OS base sub-agent (${profile})" \
         </dev/null >/dev/null 2>&1; then
     created="${created}${profile} "
     clear_telegram_token "${profile}"
@@ -128,7 +129,7 @@ echo "Only AFTER every profile has its own token, wire the watchdog in infra/.en
 echo '  AIOS_AGENTS="default '"$(echo "${AGENTS}" | xargs)"'"'
 echo "then re-run: bash infra/watchdog.sh"
 echo
-echo "NOTE: cloned profiles share default's SOUL.md (JARVIS). To give each a"
+echo "NOTE: cloned profiles share default's SOUL.md (the orchestrator). To give each a"
 echo "distinct role, apply its charter soul file, e.g.:"
-echo '  cp agents/scout.SOUL.md "$(hermes -p scout profile show 2>/dev/null | grep -i path | awk "{print \$NF}")/SOUL.md"'
+echo '  cp agents/researcher.SOUL.md "$(hermes -p researcher profile show 2>/dev/null | grep -i path | awk "{print \$NF}")/SOUL.md"'
 echo "or edit \$HERMES_HOME/profiles/<name>/SOUL.md directly."

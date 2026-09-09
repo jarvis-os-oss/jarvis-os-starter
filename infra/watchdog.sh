@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# JARVIS-OS watchdog. Ensures the cockpit dashboard and each configured agent
+# AI-OS watchdog. Ensures the cockpit dashboard and each configured agent
 # gateway is running. Idempotent and safe to run repeatedly (e.g. from cron
 # every few minutes). Prints one status line, silent when everything is healthy.
 #
@@ -15,11 +15,11 @@ set -u
 : "${COCKPIT_HEALTH_PATH:=/api/health}"
 : "${PYTHON_BIN:=python3}"
 : "${HERMES_BIN:=hermes}"
-# Space-separated list of Hermes profiles to keep always-on. "default" = JARVIS.
+# Space-separated list of Hermes profiles to keep always-on. "default" = the orchestrator.
 # Ships with only "default" so a fresh install works out of the box. Create the
 # five base sub-agents with scripts/create_agent_profiles.sh, then set
 # AIOS_AGENTS (here or in infra/.env) to the profiles you actually created, e.g.
-#   AIOS_AGENTS="default assistant scout ada scotty pen"
+#   AIOS_AGENTS="default assistant researcher developer maintenance writer"
 : "${AIOS_AGENTS:=default}"
 
 DASH_LOG="${AIOS_HOME}/logs/dashboard.log"

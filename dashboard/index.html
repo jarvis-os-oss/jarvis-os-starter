@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JARVIS-OS Cockpit</title>
+<title>AI-OS Cockpit</title>
 <style>
   :root {
     --bg: #0a0e17;
@@ -51,7 +51,7 @@
 </head>
 <body>
 <header>
-  <h1>JARVIS-OS</h1>
+  <h1>AI-OS</h1>
   <span class="sub" id="instance">Cockpit</span>
   <span class="clock" id="clock">--:--</span>
 </header>
@@ -59,7 +59,7 @@
   <h2>Agent Team (<span id="count">0</span>)</h2>
   <div class="grid" id="team"></div>
 </main>
-<footer>JARVIS-OS Starter Kit. Generic cockpit skeleton.</footer>
+<footer>AI-OS Starter Kit. Generic cockpit skeleton.</footer>
 <script>
   const T = new URLSearchParams(location.search).get("t") || "";
   const q = (p) => p + (p.includes("?") ? "&" : "?") + "t=" + encodeURIComponent(T);
