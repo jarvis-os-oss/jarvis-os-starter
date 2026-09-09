@@ -75,4 +75,18 @@ fi
 if [ -n "${missing:-}" ]; then
   echo "SKIPPED (profile not found, create it first): ${missing}"
 fi
+
+# 3) OPTIONAL upstream update check (READ-ONLY, opt-in) ----------------------
+# Off by default. Set AIOS_UPDATE_CHECK=1 (here or in infra/.env) to have the
+# watchdog log whether newer upstream commits / a newer release tag exist. It
+# only runs `git fetch` and logs a verdict; it NEVER pulls, merges, or touches
+# your working tree. Acting on an update stays a manual `git merge upstream/main`
+# (see docs/UPSTREAM_UPDATES.md). A failed check never breaks the watchdog.
+: "${AIOS_UPDATE_CHECK:=0}"
+if [ "${AIOS_UPDATE_CHECK}" = "1" ]; then
+  CHECK="$(cd "$(dirname "$0")/.." && pwd)/scripts/check_upstream_updates.sh"
+  if [ -x "$CHECK" ]; then
+    AIOS_HOME="$(cd "$(dirname "$0")/.." && pwd)" bash "$CHECK" >/dev/null 2>&1 || true
+  fi
+fi
 # silent when all OK (watchdog pattern)
