@@ -1,0 +1,37 @@
+{
+  "_comment": "Tiered model-routing policy for an AI-OS team. Idea: route grunt-work (reading, summarizing, extracting, formatting raw text) to a cheap/fast model and keep reasoning, decisions and anything that can authorize a side effect on the frontier model. Implemented with Hermes NATIVE mechanisms only: per-task 'auxiliary' model slots + 'delegation.model'. No custom LLM router is built; this file only declares which native slots each agent pins to the cheap tier. Fully reversible via the master 'enabled' flag or apply_routing.py --revert. Inspired by Spotify Engineering's 'Portal cut my Claude Code token usage by 90%' (the 'shunt' plugin), reworked to use Hermes native config instead of a hook layer.",
+
+  "enabled": false,
+
+  "tiers": {
+    "cheap": { "provider": "auto", "model": "REPLACE_WITH_CHEAP_MODEL" },
+    "main":  { "provider": "auto", "model": "REPLACE_WITH_FRONTIER_MODEL" }
+  },
+
+  "defaults": {
+    "_comment": "Aux slots safe to route to the cheap tier for ANY agent: pure formatting/summarization, no reasoning, no decisions. Left OFF per agent until you pilot one. IMPORTANT: keep 'approval' and 'delegation' on the frontier model for any agent that can trigger a real side effect (send, spend, book). On some Hermes versions the web_extract tool does deterministic truncate-and-store with NO LLM call, so routing auxiliary.web_extract is inert there: verify with a live probe before assuming it helps, and do not list it unless your version actually invokes a model for it.",
+    "auxiliary_tasks": ["compression", "title_generation"],
+    "delegation": false
+  },
+
+  "agents": {
+    "_comment": "Per-agent opt-in. Only agents with 'enabled: true' AND the master 'enabled: true' get routed. 'hermes_home' is that profile's HERMES_HOME on your host: fill in your real per-profile path before --apply. The examples below use the kit's base role names; add, remove, or rename to match your own roster in dashboard/team_config.json.",
+
+    "scout": {
+      "enabled": false,
+      "hermes_home": "REPLACE_WITH_PROFILE_HOME/scout",
+      "auxiliary_tasks": ["compression", "title_generation"],
+      "delegation": true,
+      "reason": "Good first pilot for most teams. A research/recon agent's core loop is long sessions with heavy context compression plus delegate_task fan-out to workers. Those slots (compression, delegation) invoke a model off the critical reasoning path: no reasoning, no decisions, no side effects, so they are the cleanest grunt-work to route cheap. model.default (the actual research judgement) is never touched."
+    },
+
+    "assistant": {
+      "enabled": false,
+      "hermes_home": "REPLACE_WITH_PROFILE_HOME/assistant",
+      "auxiliary_tasks": ["compression", "title_generation"],
+      "delegation": false,
+      "excluded_slots": ["approval", "delegation"],
+      "reason": "Example of a NARROW, safety-guarded rollout. Route only the input-heavy READ/summarize grunt work (compression of large incoming text, trivial title_generation). HARD EXCLUSION enforced at runtime via excluded_slots: 'approval' stays on the frontier model because a cheap mis-score must never auto-approve a real side effect (a send/spend/book), and 'delegation' stays off. apply_routing.py RAISES if anything tries to route an excluded slot. model.default is never touched, so the agent's actual decisions and user-facing text stay frontier."
+    }
+  }
+}
