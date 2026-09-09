@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# Pre-push hook: enforce the neutral bot git identity on every push.
+#
+# WHY THIS EXISTS
+# This is a PUBLIC starter repo. Commit metadata (author/committer name+email)
+# is published with every push. A real name or email in that metadata is a PII
+# leak even when the file content is clean. This has happened before: the
+# history was neutralised once, then later PRs re-introduced real identities
+# because the contributor's local git identity was not the bot. This hook is the
+# durable guard so it cannot happen a third time.
+#
+# WHAT IT DOES
+# For every commit being pushed, it checks the author AND committer email
+# against the allowed bot identity. If any commit uses a different identity, the
+# push is REJECTED with instructions. Nothing is sent to the remote.
+#
+# INSTALL
+#   bash scripts/install_git_hooks.sh
+# (copies this file to .git/hooks/pre-push, or sets core.hooksPath)
+#
+# BYPASS (discouraged, for maintainers who know what they are doing)
+#   git push --no-verify ...
+set -u
+
+BOT_EMAIL="jarvis-os-oss@users.noreply.github.com"
+BOT_NAME="starter-kit-bot"
+
+# Read the ref updates git feeds on stdin: "<local ref> <local sha> <remote ref> <remote sha>"
+zero="0000000000000000000000000000000000000000"
+bad=0
+checked=0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ "$local_sha" = "$zero" ] && continue   # branch deletion, nothing to check
+
+  if [ "$remote_sha" = "$zero" ]; then
+    # New branch on the remote: check every commit reachable from the pushed
+    # tip that is NOT already on any remote-tracking branch. Excluding
+    # --remotes (not --all) is deliberate: the local branch ref itself points
+    # at the tip, so --all would wrongly exclude the very commits we must check.
+    rev_args="$local_sha --not --remotes"
+  else
+    rev_args="${remote_sha}..${local_sha}"
+  fi
+
+  # List author+committer identity for each commit in range.
+  while IFS='|' read -r csha ae ce an cn; do
+    [ -z "$csha" ] && continue
+    checked=$((checked + 1))
+    if [ "$ae" != "$BOT_EMAIL" ] || [ "$ce" != "$BOT_EMAIL" ]; then
+      if [ "$bad" -eq 0 ]; then
+        echo "" >&2
+        echo "PUSH REJECTED: non-bot git identity in commit metadata." >&2
+        echo "This is a public repo; author/committer must be the neutral bot:" >&2
+        echo "  name  = ${BOT_NAME}" >&2
+        echo "  email = ${BOT_EMAIL}" >&2
+        echo "" >&2
+        echo "Offending commits:" >&2
+      fi
+      echo "  ${csha}  author=<${ae}> committer=<${ce}>" >&2
+      bad=$((bad + 1))
+    fi
+  done < <(git log --format='%H|%ae|%ce|%an|%cn' $rev_args 2>/dev/null)
+done
+
+if [ "$bad" -gt 0 ]; then
+  cat >&2 <<EOF
+
+Fix: set the bot identity in THIS repo and rewrite the offending commits.
+
+  git config user.name  "${BOT_NAME}"
+  git config user.email "${BOT_EMAIL}"
+
+To relabel commits you already made with the wrong identity, amend the last one:
+  git commit --amend --reset-author --no-edit
+or, for several commits, rebase and reset author, or re-run the bot rewrite in
+scripts/ (see CONTRIBUTING.md "Committing to this repo").
+
+EOF
+  exit 1
+fi
+
+exit 0

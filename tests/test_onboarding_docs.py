@@ -49,8 +49,9 @@ class OnboardingInterviewDocTest(unittest.TestCase):
         self.assertIn("explicit approval", self.text)
 
     def test_stays_multi_agent(self):
-        # Must not drift into single-agent framing; it defines a sub-agent under JARVIS.
-        self.assertIn("JARVIS", self.text)
+        # Must not drift into single-agent framing; it defines a sub-agent under
+        # the orchestrator.
+        self.assertIn("orchestrator", self.text)
 
 
 class DocReferencesTest(unittest.TestCase):

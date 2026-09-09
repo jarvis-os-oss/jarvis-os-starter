@@ -1,0 +1,24 @@
+# Agent naming map for the AI-OS Starter Kit.
+#
+# Copy this file to  agents/names.local  and give each agent your own name,
+# then run:   python3 scripts/name_agents.py
+#
+# Format:  <key> = <Your name>
+#   <key>  is the agent's profile key (left column below, do NOT change it).
+#   <name> is the display name you want. Leave it at the role default to keep
+#          the neutral name.
+#
+# The naming step fills the {{AGENT_NAME}} placeholder in each agent's
+# agents/<soul>.SOUL.md and sets the matching "name" in
+# dashboard/team_config.json. It is idempotent and re-runnable: change a name
+# here and run the script again.
+#
+# Defaults are the generic ROLE names. Examples of custom names you might pick
+# are shown in comments; they are only examples, not required.
+
+default     = Orchestrator     # e.g. Jarvis, Athena, Hub
+assistant   = Assistant        # e.g. Friday, Max
+researcher  = Researcher       # e.g. Scout, Sherlock
+developer   = Developer        # e.g. Ada, Turing
+maintenance = Maintenance      # e.g. Scotty, Gaia
+writer      = Writer           # e.g. Pen, Quill

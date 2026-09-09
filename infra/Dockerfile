@@ -1,4 +1,4 @@
-# JARVIS-OS cockpit dashboard container.
+# AI-OS cockpit dashboard container.
 # Minimal, dependency-light image for the Flask cockpit skeleton. Agent
 # gateways run via the Hermes runtime (out of scope for this image); this
 # container serves the read-only cockpit UI + API.

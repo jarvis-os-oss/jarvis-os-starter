@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""JARVIS-OS cockpit agent-status collector (host-side).
+"""AI-OS cockpit agent-status collector (host-side).
 
 Writes a small, sanitised ``agent_status.json`` describing each agent
 gateway's liveness, so the cockpit can render RUNNING/STOPPED without needing

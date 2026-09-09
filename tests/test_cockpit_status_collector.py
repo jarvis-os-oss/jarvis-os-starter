@@ -33,13 +33,13 @@ class LoadStatusFileTest(unittest.TestCase):
 
     def test_fresh_file_is_used(self):
         path = self._write({"generated_at": time.time(),
-                             "agents": {"scout": "running", "ada": "stopped"}})
+                             "agents": {"researcher": "running", "developer": "stopped"}})
         out = cockpit_team.load_status_file(path=path, max_age=180)
-        self.assertEqual(out, {"scout": "running", "ada": "stopped"})
+        self.assertEqual(out, {"researcher": "running", "developer": "stopped"})
 
     def test_stale_file_is_rejected(self):
         path = self._write({"generated_at": time.time() - 10000,
-                             "agents": {"scout": "running"}})
+                             "agents": {"researcher": "running"}})
         self.assertEqual(cockpit_team.load_status_file(path=path, max_age=180), {})
 
     def test_missing_file_returns_empty(self):
@@ -57,24 +57,24 @@ class LoadStatusFileTest(unittest.TestCase):
 class ResolveStatusTest(unittest.TestCase):
     def test_no_port_is_planned(self):
         self.assertEqual(
-            cockpit_team.resolve_status({"key": "muse"}, {}), "planned")
+            cockpit_team.resolve_status({"key": "advisor"}, {}), "planned")
 
     def test_file_verdict_wins_over_probe(self):
         # Port present but nothing listens; the file says running -> running.
-        agent = {"key": "scout", "port": 8644}
+        agent = {"key": "researcher", "port": 8644}
         self.assertEqual(
-            cockpit_team.resolve_status(agent, {"scout": "running"}), "running")
+            cockpit_team.resolve_status(agent, {"researcher": "running"}), "running")
 
     def test_falls_back_to_probe_when_no_file_verdict(self):
         # No verdict in the map + a port that nothing listens on -> stopped
         # (the TCP probe refuses). Uses a high, almost-certainly-closed port.
-        agent = {"key": "scout", "port": 65533}
+        agent = {"key": "researcher", "port": 65533}
         self.assertEqual(cockpit_team.resolve_status(agent, {}), "stopped")
 
     def test_ignores_garbage_verdict_and_probes(self):
-        agent = {"key": "scout", "port": 65533}
+        agent = {"key": "researcher", "port": 65533}
         self.assertEqual(
-            cockpit_team.resolve_status(agent, {"scout": "bogus"}), "stopped")
+            cockpit_team.resolve_status(agent, {"researcher": "bogus"}), "stopped")
 
 
 class CollectorStatusForTest(unittest.TestCase):
@@ -98,7 +98,7 @@ class CollectorStatusForTest(unittest.TestCase):
 
     def test_planned_without_port(self):
         self.assertEqual(
-            collect_status._status_for({"key": "muse"}), "planned")
+            collect_status._status_for({"key": "advisor"}), "planned")
 
     def test_stopped_when_state_file_missing(self):
         self.assertEqual(
@@ -107,24 +107,24 @@ class CollectorStatusForTest(unittest.TestCase):
 
     def test_running_requires_state_and_live_pid(self):
         # Our own pid is guaranteed alive.
-        self._write_state("scout",
+        self._write_state("researcher",
                           {"gateway_state": "running", "pid": os.getpid()})
         self.assertEqual(
-            collect_status._status_for({"key": "scout", "port": 8644}),
+            collect_status._status_for({"key": "researcher", "port": 8644}),
             "running")
 
     def test_stopped_when_pid_dead(self):
         # A pid that cannot be alive.
-        self._write_state("ada", {"gateway_state": "running", "pid": 2 ** 31 - 1})
+        self._write_state("developer", {"gateway_state": "running", "pid": 2 ** 31 - 1})
         self.assertEqual(
-            collect_status._status_for({"key": "ada", "port": 8645}),
+            collect_status._status_for({"key": "developer", "port": 8645}),
             "stopped")
 
     def test_stopped_when_state_not_running(self):
-        self._write_state("pen",
+        self._write_state("writer",
                           {"gateway_state": "stopped", "pid": os.getpid()})
         self.assertEqual(
-            collect_status._status_for({"key": "pen", "port": 8655}),
+            collect_status._status_for({"key": "writer", "port": 8655}),
             "stopped")
 
 
