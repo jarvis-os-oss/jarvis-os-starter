@@ -1,6 +1,6 @@
 # Installing the Hermes runtime
 
-The JARVIS-OS cockpit (`infra/docker-compose.yml`) runs as a container, but the
+The AI-OS cockpit (`infra/docker-compose.yml`) runs as a container, but the
 **agent gateways do not**. Each agent is a [Hermes](https://github.com/NousResearch/hermes-agent)
 profile, and `infra/watchdog.sh` starts and supervises those gateways by calling
 the `hermes` command **on the host**. If `hermes` is not installed on the host,
@@ -88,7 +88,7 @@ for the runtime self-test before reading logs by hand:
 
 ```bash
 hermes doctor              # checks the default profile / runtime
-hermes -p <profile> doctor # checks one agent profile, e.g. scout
+hermes -p <profile> doctor # checks one agent profile, e.g. researcher
 ```
 
 It reports install, configuration, model, and channel problems in one place and

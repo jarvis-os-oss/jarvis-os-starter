@@ -106,7 +106,7 @@ class RosterTest(unittest.TestCase):
         agents = data.get("agents", [])
         self.assertGreaterEqual(len(agents), 6)
         keys = {a["key"] for a in agents}
-        self.assertIn("default", keys)  # JARVIS
+        self.assertIn("default", keys)  # the orchestrator
         # Every agent has the fields the cockpit renders.
         for a in agents:
             for field in ("key", "name", "role", "desc"):
@@ -116,8 +116,10 @@ class RosterTest(unittest.TestCase):
         with open(os.path.join(ROOT, "dashboard", "team_config.json")) as fh:
             data = json.load(fh)
         for a in data["agents"]:
-            key = "jarvis" if a["key"] == "default" else a["key"]
-            path = os.path.join(ROOT, "agents", f"{key}.SOUL.md")
+            # The roster maps each profile key to its persona via the "soul"
+            # field (falls back to the key). default -> orchestrator.SOUL.md.
+            soul = a.get("soul") or a["key"]
+            path = os.path.join(ROOT, "agents", f"{soul}.SOUL.md")
             self.assertTrue(os.path.exists(path), f"missing SOUL for {a['key']}: {path}")
 
 

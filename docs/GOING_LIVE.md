@@ -7,7 +7,25 @@ save the failure modes that actually bite first-time operators.
 
 This is the multi-agent version of the single-agent "five checks" that circulate
 in the Hermes community. The difference: you are not hardening one bot, you are
-hardening JARVIS plus every sub-agent profile the watchdog starts.
+hardening the orchestrator plus every sub-agent profile the watchdog starts.
+
+## Step 0. Name your agents
+
+Before anything runs, give each agent its own name (or keep the neutral role
+names). The kit ships every core agent with a generic role name (Orchestrator,
+Researcher, Developer, Maintenance, Writer, Assistant) and a `{{AGENT_NAME}}`
+placeholder in its persona file, so nothing carries a preset proper name.
+
+```bash
+cp agents/names.example agents/names.local     # first time only
+# edit agents/names.local:  <key> = <Your name>   (Enter/omit keeps the role name)
+python3 scripts/name_agents.py                 # apply to personas + roster
+python3 scripts/name_agents.py --check         # verify: 0 unresolved placeholders
+```
+
+`scripts/setup.py` runs this for you on first setup; run `name_agents.py` again
+any time you want to change a name. `agents/names.local` is git-ignored, so your
+chosen names stay on your instance.
 
 ## Five checks
 
@@ -17,10 +35,10 @@ Each Hermes profile that has a Telegram bot must set `TELEGRAM_ALLOWED_USERS` to
 your own numeric Telegram ID (and only the IDs you trust). An empty allow-list
 means anyone who finds the bot can drive an agent that reaches your terminal and
 files. This kit runs one bot per agent (see the README), so check **every**
-profile, not just JARVIS:
+profile, not just the orchestrator:
 
 ```bash
-for p in default assistant scout ada scotty pen; do
+for p in default assistant researcher developer maintenance writer; do
   if [ "$p" = default ]; then f=~/.hermes/.env; else f=~/.hermes/profiles/$p/.env; fi
   printf '%-10s ' "$p"; grep -q '^TELEGRAM_ALLOWED_USERS=..*' "$f" 2>/dev/null \
     && echo "allow-list set" || echo "MISSING allow-list"
@@ -46,7 +64,7 @@ was committed.
 ### 3. The cockpit and the agent API server bind to loopback
 
 The cockpit (`COCKPIT_PORT`, default 8517) and the Hermes API server
-(`JARVIS_API_URL`, default `127.0.0.1:8642`) expose the full toolbox, terminal
+(`ORCHESTRATOR_API_URL`, default `127.0.0.1:8642`) expose the full toolbox, terminal
 included. Keep them on `127.0.0.1` unless you deliberately need remote access,
 and when you do, put them behind TLS and an allow-list or a tunnel, never raw on
 a public port. Confirm what is actually listening:
