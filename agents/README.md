@@ -1,18 +1,25 @@
 # Team Charter
 
-The default team shipped with the JARVIS-OS Starter Kit. JARVIS orchestrates,
-the sub-agents specialise. All hand-offs go through JARVIS. Rename or replace
-any agent by editing its `agents/<key>.SOUL.md` and the roster entry in
-`dashboard/team_config.json`, or add a new one from `agents/_TEMPLATE.SOUL.md`.
+The default team shipped with the AI-OS Starter Kit. The orchestrator
+coordinates, the sub-agents specialise. All hand-offs go through the
+orchestrator. Agents ship with generic ROLE names; give each one your own name
+in the naming step (`scripts/name_agents.py`, see `docs/GOING_LIVE.md`). Rename
+or replace any agent by editing its `agents/<key>.SOUL.md` and the roster entry
+in `dashboard/team_config.json`, or add a new one from
+`agents/_TEMPLATE.SOUL.md`.
 
-| Key       | Name      | Role                          | Does                                                        |
-|-----------|-----------|-------------------------------|------------------------------------------------------------|
-| default   | JARVIS    | Chief of Staff / Orchestrator | Takes requests, routes to the team, bundles results back.  |
-| assistant | Assistant | Admin / PA                    | Inbox triage, calendar, reminders, briefings.              |
-| scout     | Scout     | Research / Intelligence       | Market and competitor research, comparisons, fact-checks.  |
-| ada       | Ada       | Development                   | Builds tools and features on branches, opens PRs, no deploy.|
-| scotty    | Scotty    | DevOps, Security & Maintenance| Infra, monitoring, updates, backups, reviews and deploys.  |
-| pen       | Pen       | Content / Writing             | Drafts posts, articles, emails in the user's voice.        |
+| Key         | Role name    | Role                          | Does                                                        |
+|-------------|--------------|-------------------------------|-------------------------------------------------------------|
+| default     | Orchestrator | Chief of Staff / Orchestrator | Takes requests, routes to the team, bundles results back.   |
+| assistant   | Assistant    | Admin / PA                    | Inbox triage, calendar, reminders, briefings.               |
+| researcher  | Researcher   | Research / Intelligence       | Market and competitor research, comparisons, fact-checks.   |
+| developer   | Developer    | Development                   | Builds tools and features on branches, opens PRs, no deploy.|
+| maintenance | Maintenance  | DevOps, Security & Maintenance| Infra, monitoring, updates, backups, reviews and deploys.   |
+| writer      | Writer       | Content / Writing             | Drafts posts, articles, emails in the user's voice.         |
+
+The "Role name" column is the default display name. It is a placeholder: pick
+your own (e.g. call the orchestrator "Athena" or the developer "Ada") in the
+naming step. The `Key` is the Hermes profile name and does not change.
 
 ## Keep each SOUL.md short
 
@@ -37,15 +44,16 @@ explicit list of what the agent must never do without approval. See
 [`ONBOARDING_INTERVIEW.md`](ONBOARDING_INTERVIEW.md) for the copy-paste prompt.
 
 ## Delegation model
-1. JARVIS receives the request.
-2. JARVIS routes each subtask to the fitting specialist.
-3. Specialists work in isolation and report back to JARVIS.
-4. JARVIS merges the results into one answer for the user.
+1. The orchestrator receives the request.
+2. The orchestrator routes each subtask to the fitting specialist.
+3. Specialists work in isolation and report back to the orchestrator.
+4. The orchestrator merges the results into one answer for the user.
 
-## Boundary: Ada builds, Scotty operates
-Ada writes code on `ada/*` branches and opens PRs. Scotty reviews, merges to
-`main`, and deploys. The same instance must not both write code and sign off on
-its security and stability. See `docs/BRANCH_PROTECTION.md`.
+## Boundary: the developer builds, the maintenance agent operates
+The developer agent writes code on `dev/*` branches and opens PRs. The
+maintenance agent reviews, merges to `main`, and deploys. The same instance must
+not both write code and sign off on its security and stability. See
+`docs/BRANCH_PROTECTION.md`.
 
 ## Optional agents (Package 2)
 Additional specialised roles (travel, shopping, style-advisor, health-coach,

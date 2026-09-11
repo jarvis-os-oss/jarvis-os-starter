@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# JARVIS-OS cockpit status refresher (host-side cron helper).
+# AI-OS cockpit status refresher (host-side cron helper).
 #
 # Runs dashboard/collect_status.py on the host and writes the sanitised
 # agent_status.json into the cockpit's log volume, so the cockpit can report

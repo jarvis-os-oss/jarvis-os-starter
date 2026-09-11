@@ -1,33 +1,33 @@
 # Architecture
 
-JARVIS-OS is a small orchestrator-plus-specialists system. One coordinator
-(JARVIS) receives every request, routes work to specialised sub-agents, and
+AI-OS is a small orchestrator-plus-specialists system. One coordinator
+(the orchestrator) receives every request, routes work to specialised sub-agents, and
 merges their results back into a single answer.
 
 ```
                  user
                   |
                   v
-             +----------+          each agent = one Hermes profile
-             |  JARVIS   |         with its own SOUL.md (agents/*.SOUL.md)
-             | (default) |
-             +----------+
-              /  |   |  \
+             +--------------+     each agent = one Hermes profile
+             | orchestrator |            with its own SOUL.md (agents/*.SOUL.md)
+             |  (default)   |
+             +--------------+
+              /  |   |   |  \
              v   v   v   v   v
-      assistant scout ada scotty pen        (specialists)
+      assistant researcher developer maintenance writer   (specialists)
              \   |   |   |   /
-              report back to JARVIS
+          report back to the orchestrator
 ```
 
 ## Components
 
-- Agents (`agents/`): one `SOUL.md` per role. `jarvis.SOUL.md` is the
+- Agents (`agents/`): one `SOUL.md` per role. `orchestrator.SOUL.md` is the
   orchestrator. `_TEMPLATE.SOUL.md` is the blank for new agents. The roster in
   `dashboard/team_config.json` maps each agent key to a gateway port and UI
   metadata. Adding an agent is data-only: drop a SOUL file and a roster entry.
 
 - Agent gateways: each agent runs as a Hermes profile exposing an OpenAI-style
-  chat API on its own port. The cockpit and JARVIS call these ports. Ports are
+  chat API on its own port. The cockpit and the orchestrator call these ports. Ports are
   declared per agent in the roster.
 
 - Cockpit (`dashboard/`): a token-gated Flask app. `app.py` serves the UI and a
@@ -56,8 +56,8 @@ merges their results back into a single answer.
   containerise the cockpit. Gateways run on the Hermes runtime and are managed
   by the watchdog, not modelled as compose services in the starter.
 
-- Setup (`scripts/setup.py`): first-run onboarding. Generates `.env`, can rename
-  agents, wires the `upstream` remote for updates.
+- Setup (`scripts/setup.py`): first-run onboarding. Generates `.env`, names your
+  agents (the naming step), wires the `upstream` remote for updates.
 
 ## Key operational lesson baked in
 
@@ -74,6 +74,6 @@ to leave agents silently down after a crash-restart. See `infra/watchdog.sh`.
   Config references them by name or path.
 - `scripts/scan_secrets.py` runs in CI and fails the build on any secret-shaped
   or denylisted token, so nothing personal or credential-like can be committed.
-- Build/deploy separation: the Dev agent (Ada) writes code on branches and opens
-  PRs; the DevOps agent (Scotty) reviews, merges, and deploys. See
+- Build/deploy separation: the developer agent writes code on branches and opens
+  PRs; the maintenance agent reviews, merges, and deploys. See
   `BRANCH_PROTECTION.md`.

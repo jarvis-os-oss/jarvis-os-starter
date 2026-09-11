@@ -1,4 +1,4 @@
-"""JARVIS-OS cockpit dashboard (generic starter skeleton).
+"""AI-OS cockpit dashboard (generic starter skeleton).
 
 A minimal token-gated Flask app that renders the agent team and a system
 overview. It carries NO personal data, NO branding assets, and NO secrets. All
@@ -42,8 +42,8 @@ def _load_auth_token():
 
 AUTH_TOKEN = _load_auth_token()
 
-# Agent gateway base: JARVIS (default profile). Used only if /api/chat is wired.
-AGENT_API = os.environ.get("JARVIS_API_URL", "http://127.0.0.1:8642/v1/chat/completions")
+# Agent gateway base: the orchestrator (default profile). Used only if /api/chat is wired.
+AGENT_API = os.environ.get("ORCHESTRATOR_API_URL", "http://127.0.0.1:8642/v1/chat/completions")
 
 
 def _agent_key():
@@ -68,7 +68,7 @@ except Exception as _e:  # pragma: no cover - defensive
 @app.route("/api/health")
 def health():
     """Unauthenticated liveness probe for the watchdog and container HEALTHCHECK."""
-    return jsonify({"status": "ok", "service": "jarvis-os-cockpit"})
+    return jsonify({"status": "ok", "service": "aios-cockpit"})
 
 
 @app.route("/api/data")
@@ -80,7 +80,7 @@ def data():
         "time": datetime.now().strftime("%H:%M"),
         "date": datetime.now().strftime("%A, %d. %B %Y"),
         "agent_count": len(roster),
-        "instance": os.environ.get("AIOS_INSTANCE_NAME", "JARVIS-OS"),
+        "instance": os.environ.get("AIOS_INSTANCE_NAME", "AI-OS"),
     })
 
 

@@ -9,6 +9,8 @@ secrets/
 .secrets/
 # Owner's real denylist terms for the PII scanner (the .example is tracked).
 .scan_denylist.local
+# Your chosen agent names (the .example is tracked; run scripts/name_agents.py).
+agents/names.local
 
 # Runtime artefacts
 logs/

@@ -27,7 +27,7 @@ jobs:
         run: python3 scripts/scan_secrets.py
 
       - name: Setup script smoke (non-interactive)
-        run: python3 scripts/setup.py --non-interactive --skip-upstream --skip-rename --force
+        run: python3 scripts/setup.py --non-interactive --skip-upstream --skip-naming --force
 
       - name: Unit + integration tests
         run: python3 -m unittest discover -s tests -v
