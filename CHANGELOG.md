@@ -1,6 +1,57 @@
 # Starter-Kit Sync-Changelog
 
-Nachvollziehbarkeits-Log des regelmaessigen Abgleichs gegen das getrackte Upstream-Repo. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Wird vom Sync-Skript erzeugt, nicht manuell.
+Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen jarvis-ai-os main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
+
+## 2026-09-15 - Sync-Lauf (jarvis-ai-os main 4840a9809..3d81a091f)
+
+Geprueft: 11 neue Commits. Nachziehen: 2, bewusst nicht: 2, Entscheidung noetig: 7.
+
+- `3a6c3a413` Add Evidence Record convention for Ada PRs (#77)
+  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
+  - Grund: Unklar - manuelle Einordnung noetig
+  - Dateien: docs/evidence/README.md, docs/evidence/evidence.template.json, evidence/evidence-record-convention.evidence.json, scripts/test_validate_evidence.py, scripts/validate_evidence.py
+- `35c8df717` ci(evidence-gate): validate_evidence.py als PR-Pflicht-Gate (#78)
+  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
+  - Grund: Unklar - manuelle Einordnung noetig
+  - Dateien: .github/workflows/evidence-gate.yml, evidence/ci-evidence-gate.evidence.json
+- `4a705db4b` chore(scripts): add scotty reviewer_approve identity to gh_rest.py (#80)
+  - Verdikt: BEWUSST NICHT UEBERNEHMEN
+  - Grund: Marc-spezifische Preference/Daten ('skalar')
+  - Dateien: scripts/gh_rest.py
+- `16c376ed7` squash merge PR #46: peerbus escalation notify to JARVIS
+  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
+  - Grund: Security/Infra-Signal ('pii') - konservativ zur Pruefung markiert
+  - Dateien: eval-harness/.gitignore, eval-harness/README.md, eval-harness/agents.json, eval-harness/bridge.py, eval-harness/cases/ada.json, eval-harness/cases/donna.json, eval-harness/cases/ledger.json, eval-harness/cases/wells.json ...
+- `d154e3365` squash merge PR #53: peerbus escalation notify to JARVIS
+  - Verdikt: BEWUSST NICHT UEBERNEHMEN
+  - Grund: Marc-spezifische Preference/Daten ('tts')
+  - Dateien: docs/evals/codebase-memory-mcp.md
+- `f752b72ec` squash merge PR #54: peerbus escalation notify to JARVIS
+  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
+  - Grund: Unklar - manuelle Einordnung noetig
+  - Dateien: docs/evals/agent-reach.md
+- `085b4258c` squash merge PR #55: peerbus escalation notify to JARVIS
+  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
+  - Grund: Security/Infra-Signal ('secret') - konservativ zur Pruefung markiert
+  - Dateien: docs/evals/hermy-hq.md
+- `d7930becd` [squash] PR #84: peerbus escalation notify to JARVIS (T-005)
+  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
+  - Grund: Unklar - manuelle Einordnung noetig
+  - Dateien: evidence/scotty-model-correction.evidence.json, model-tiering/PER-TASK-PLAN.md, model-tiering/README.md, model-tiering/estimate_saving.py, model-tiering/test_apply_tiering.py, model-tiering/tiering.json
+- `2af9f5b54` [squash] PR #85: peerbus escalation notify to JARVIS (T-005)
+  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
+  - Grund: Unklar - manuelle Einordnung noetig
+  - Dateien: evidence/soul-separator-collapse.evidence.json, scripts/collapse_soul_separators.py, scripts/test_collapse_soul_separators.py
+- `d7cd484ca` [squash] PR #86: peerbus escalation notify to JARVIS (T-005)
+  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
+  - Grund: Feature/Erweiterung ('pilot') - kein Muss fuers Kit
+  - Dateien: evidence/magnet-pilot-status.evidence.json, scripts/apply_magnet_pilot_status.py, scripts/test_apply_magnet_pilot_status.py
+- `3d81a091f` [squash] PR #87: peerbus escalation notify to JARVIS (T-005)
+  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
+  - Grund: Unklar - manuelle Einordnung noetig
+  - Dateien: evidence/scout-fetch-skill.evidence.json, scout-fetch-protokoll/SKILL.md, scripts/apply_scout_fetch_skill.py, scripts/test_apply_scout_fetch_skill.py
+
+Report an JARVIS: JA (2 Nachzieh-Kandidat(en) - Freigabe pro Fall bei Marc/JARVIS)
 
 Dies ist eine neutrale Vorlage. Reale Eintraege entstehen erst zur Laufzeit in der jeweiligen Instanz und referenzieren dort ausschliesslich das lokal konfigurierte Upstream-Repo.
 
