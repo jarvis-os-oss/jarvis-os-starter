@@ -2,6 +2,17 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen upstream main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-16 - Sync-Lauf (upstream main 3d81a091f..93e647fd3)
+
+Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 1, Entscheidung noetig: 0.
+
+- `93e647fd3` squash merge PR #90: internal-bus escalation notify to JARVIS
+  - Verdikt: BEWUSST NICHT UEBERNEHMEN
+  - Grund: the operator-spezifische Preference/Daten ('REDACTED')
+  - Dateien: .github/workflows/ocr-precheck.yml, evidence/scotty-ocr-precheck-activate.evidence.json
+
+Report an JARVIS: NEIN
+
 ## 2026-09-15 - Sync-Lauf (upstream main 4840a9809..3d81a091f)
 
 Geprueft: 11 neue Commits. Nachziehen: 2, bewusst nicht: 2, Entscheidung noetig: 7.
