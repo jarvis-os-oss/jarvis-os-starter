@@ -2,6 +2,17 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen upstream main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-18 - Sync-Lauf (upstream main 2dc1cd5d3..bb5dd9106)
+
+Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 1, Entscheidung noetig: 0.
+
+- `bb5dd9106` TEAM_INFO: Verifikation nicht als sichtbarer Meta-Satz (#94)
+  - Verdikt: BEWUSST NICHT UEBERNEHMEN
+  - Grund: the operator-spezifische Preference/Daten ('REDACTED')
+  - Dateien: evidence/team-info-verification-fix.evidence.json, agents/TEAM_INFO.md, agents/ada.SOUL.md, agents/pixel.SOUL.md, agents/scotty.SOUL.md
+
+Report an JARVIS: NEIN
+
 ## 2026-09-17 - Sync-Lauf (upstream main 93e647fd3..2dc1cd5d3)
 
 Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 0, Entscheidung noetig: 1.
