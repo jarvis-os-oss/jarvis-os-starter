@@ -2,6 +2,17 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen jarvis-ai-os main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-18 - Sync-Lauf (jarvis-ai-os main 2dc1cd5d3..bb5dd9106)
+
+Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 1, Entscheidung noetig: 0.
+
+- `bb5dd9106` TEAM_CHARTER: Verifikation nicht als sichtbarer Meta-Satz (#94)
+  - Verdikt: BEWUSST NICHT UEBERNEHMEN
+  - Grund: Marc-spezifische Preference/Daten ('skalar')
+  - Dateien: evidence/team-charter-verification-fix.evidence.json, profiles-soul/TEAM_CHARTER.md, profiles-soul/ada.SOUL.md, profiles-soul/pixel.SOUL.md, profiles-soul/scotty.SOUL.md
+
+Report an JARVIS: NEIN
+
 ## 2026-09-17 - Sync-Lauf (jarvis-ai-os main 93e647fd3..2dc1cd5d3)
 
 Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 0, Entscheidung noetig: 1.
