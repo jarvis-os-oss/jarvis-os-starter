@@ -2,6 +2,17 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen jarvis-ai-os main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-19 - Sync-Lauf (jarvis-ai-os main bb5dd9106..3034f3b91)
+
+Geprueft: 1 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 0.
+
+- `3034f3b91` squash merge PR #95: peerbus escalation notify to JARVIS
+  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
+  - Grund: Security/Infra-Signal ('security') - konservativ zur Pruefung markiert
+  - Dateien: .gitignore, browser-profiles/README.md, browser-profiles/browser_profile.sh
+
+Report an JARVIS: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall bei Marc/JARVIS)
+
 ## 2026-09-18 - Sync-Lauf (jarvis-ai-os main 2dc1cd5d3..bb5dd9106)
 
 Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 1, Entscheidung noetig: 0.
