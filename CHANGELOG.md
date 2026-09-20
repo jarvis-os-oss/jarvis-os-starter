@@ -2,6 +2,17 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen upstream main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-20 - Sync-Lauf (upstream main 3034f3b91..cab7755fa)
+
+Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 0, Entscheidung noetig: 1.
+
+- `cab7755fa` AGENTS.md: kompakte Agent-Schnellreferenz im Repo-Root (#96)
+  - Verdikt: ADA/OWNER-ENTSCHEIDUNG NOETIG
+  - Grund: Unklar - manuelle Einordnung noetig
+  - Dateien: AGENTS.md, evidence/agents-md.evidence.json
+
+Report an JARVIS: NEIN
+
 ## 2026-09-19 - Sync-Lauf (upstream main bb5dd9106..3034f3b91)
 
 Geprueft: 1 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 0.
