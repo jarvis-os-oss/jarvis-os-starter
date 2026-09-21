@@ -2,6 +2,17 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen jarvis-ai-os main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-21 - Sync-Lauf (jarvis-ai-os main cab7755fa..10f8f06cd)
+
+Geprueft: 1 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 0.
+
+- `10f8f06cd` secret_guard: Pre-Write Secret-Pattern-Warnung im Peer-Mesh-Bus (#97)
+  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
+  - Grund: Security/Infra-Signal ('secret') - konservativ zur Pruefung markiert
+  - Dateien: .gitignore, evidence/secret-guard.evidence.json, ops_group/README.md, ops_group/peerbus.py, ops_group/peerbus_cli.py, ops_group/secret_guard.py, ops_group/tests/test_peerbus.py, ops_group/tests/test_secret_guard.py
+
+Report an JARVIS: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall bei Marc/JARVIS)
+
 ## 2026-09-20 - Sync-Lauf (jarvis-ai-os main 3034f3b91..cab7755fa)
 
 Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 0, Entscheidung noetig: 1.
