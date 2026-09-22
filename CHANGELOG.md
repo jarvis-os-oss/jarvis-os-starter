@@ -2,6 +2,25 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen jarvis-ai-os main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-22 - Sync-Lauf (jarvis-ai-os main 10f8f06cd..600b5d112)
+
+Geprueft: 3 neue Commits. Nachziehen: 0, bewusst nicht: 0, Entscheidung noetig: 3.
+
+- `dc36bb1b0` docs(governance): MCP-Connector-Policy als interne Konvention (#81)
+  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
+  - Grund: Unklar - manuelle Einordnung noetig
+  - Dateien: docs/mcp-connector-policy.md, evidence/mcp-connector-policy.evidence.json
+- `980531f2f` feat(skill): agent-architecture-audit als kanonische Skill-Quelle (#82)
+  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
+  - Grund: Feature/Erweiterung ('feat(') - kein Muss fuers Kit
+  - Dateien: evidence/agent-architecture-audit-skill.evidence.json, skills/agent-architecture-audit/SKILL.md, skills/agent-architecture-audit/scripts/architecture_audit.py, skills/agent-architecture-audit/scripts/test_architecture_audit.py
+- `600b5d112` docs+tooling(skills): 'Use when'-Trigger-Konvention + Audit-Stamper (#83)
+  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
+  - Grund: Unklar - manuelle Einordnung noetig
+  - Dateien: docs/skill-use-when-convention.md, evidence/skill-use-when-triggers.evidence.json, scripts/apply_use_when_descriptions.py, scripts/skill_use_when_descriptions.json, scripts/test_apply_use_when_descriptions.py
+
+Report an JARVIS: NEIN
+
 ## 2026-09-21 - Sync-Lauf (jarvis-ai-os main cab7755fa..10f8f06cd)
 
 Geprueft: 1 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 0.
