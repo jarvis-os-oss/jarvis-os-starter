@@ -2,6 +2,17 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen upstream main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-26 - Sync-Lauf (upstream main 600b5d112..9419a5019)
+
+Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 1, Entscheidung noetig: 0.
+
+- `9419a5019` docs(ops_group): Rollout-Plan v0.21.0 -> v0.21.5 (#100)
+  - Verdikt: BEWUSST NICHT UEBERNEHMEN
+  - Grund: the operator-spezifische Preference/Daten ('REDACTED')
+  - Dateien: evidence/scotty-rollout-plan-v0215.evidence.json, ops_group/rollout_plan_v0215.md
+
+Report an JARVIS: NEIN
+
 ## 2026-09-22 - Sync-Lauf (upstream main 10f8f06cd..600b5d112)
 
 Geprueft: 3 neue Commits. Nachziehen: 0, bewusst nicht: 0, Entscheidung noetig: 3.
