@@ -2,6 +2,17 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen upstream main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-27 - Sync-Lauf (upstream main 9419a5019..716a9b08d)
+
+Geprueft: 1 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 0.
+
+- `716a9b08d` squash merge PR #101: internal-bus escalation notify to JARVIS
+  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
+  - Grund: Generischer Infra-/Bugfix ('bump')
+  - Dateien: docs/cron-jobs/skill-kurator.md, docs/skill-contract-format/CONTRACT.md, docs/skill-contract-format/test_skill_contract.py, docs/skill-contract-format/validate_contract.py, evidence/skill-versioning-staleness.evidence.json, skill-governance/METADATA_CONVENTION.md, skill-governance/skill_metadata.py, skill-governance/test_skill_metadata.py
+
+Report an JARVIS: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall bei the operator/JARVIS)
+
 ## 2026-09-26 - Sync-Lauf (upstream main 600b5d112..9419a5019)
 
 Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 1, Entscheidung noetig: 0.
