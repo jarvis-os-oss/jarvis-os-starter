@@ -2,6 +2,21 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen jarvis-ai-os main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-28 - Sync-Lauf (jarvis-ai-os main 716a9b08d..e1c1e0edc)
+
+Geprueft: 2 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 1.
+
+- `7dd0fc044` squash merge PR #105: peerbus escalation notify to JARVIS
+  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
+  - Grund: Generischer Infra-/Bugfix ('docker')
+  - Dateien: evidence/rbac-destroy-class.evidence.json, ops_group/rbac.py, ops_group/tests/test_rbac.py
+- `e1c1e0edc` feat(plugins): delegate-destroy-guard schliesst delegate_task-destroy-Luecke (#106)
+  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
+  - Grund: Feature/Erweiterung ('feat(') - kein Muss fuers Kit
+  - Dateien: evidence/delegate-destroy-guard.evidence.json, plugins/delegate-destroy-guard/README.md, plugins/delegate-destroy-guard/__init__.py, plugins/delegate-destroy-guard/plugin.yaml, plugins/delegate-destroy-guard/test_delegate_destroy_guard.py
+
+Report an JARVIS: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall bei Marc/JARVIS)
+
 ## 2026-09-27 - Sync-Lauf (jarvis-ai-os main 9419a5019..716a9b08d)
 
 Geprueft: 1 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 0.
