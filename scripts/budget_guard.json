@@ -1,0 +1,12 @@
+{
+  "_comment": "LLM budget guard config. Ships DISABLED. Example limits only, replace with your own. The guard only REPORTS a verdict, it never throttles a foreign agent on its own. currency is a free-form label. warn_ratio triggers WARN at that fraction of the limit. See docs/BUDGET_GUARD.md.",
+  "enabled": false,
+  "currency": "USD",
+  "fleet_limit": 100.0,
+  "default_agent_limit": 20.0,
+  "agent_limits": {
+    "scout": 40.0,
+    "assistant": 10.0
+  },
+  "warn_ratio": 0.8
+}

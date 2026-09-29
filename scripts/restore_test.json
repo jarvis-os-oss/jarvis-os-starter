@@ -1,0 +1,20 @@
+{
+  "_comment": "Restore-Test config. Ships DISABLED. Set enabled=true and fill real backup paths (placeholders below) to activate. See docs/RESTORE_TEST.md. Runs restore into a throwaway temp dir only, never touches production data.",
+  "enabled": false,
+  "status_file": "REPLACE_WITH_STATUS_PATH/restore_test_status.json",
+  "targets": [
+    {
+      "name": "example-archive",
+      "type": "tarball",
+      "path": "REPLACE_WITH_BACKUP_DIR/example.tar.gz",
+      "min_files": 1,
+      "expect_members": []
+    },
+    {
+      "name": "example-db",
+      "type": "sqlite",
+      "backup_dir": "REPLACE_WITH_BACKUP_DIR/db_backups",
+      "glob": "*.ok"
+    }
+  ]
+}
