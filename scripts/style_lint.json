@@ -1,0 +1,14 @@
+{
+  "_comment": "Configurable style/policy lint gate. Ships DISABLED. Rules are fully data-driven, edit or replace them for your own policy. The shipped example forbids em/en/figure dashes (a common style preference), expressed via JSON \\u escapes so this config file itself stays plain ASCII. type is 'substring' or 'regex'. See docs/STYLE_LINT.md.",
+  "enabled": false,
+  "include_globs": ["**/*.md", "**/*.txt"],
+  "exclude_globs": ["**/node_modules/**", "**/.venv/**", "**/vendor/**"],
+  "rules": [
+    {
+      "id": "no-dashes",
+      "type": "regex",
+      "pattern": "[\u2014\u2013\u2015]",
+      "message": "Em/En/Figure-Dash nicht erlaubt (Beispiel-Regel, frei anpassbar)"
+    }
+  ]
+}

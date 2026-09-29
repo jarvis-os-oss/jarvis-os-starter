@@ -1,0 +1,17 @@
+{
+  "_comment": "Cache-/disk-hygiene config. Ships DISABLED and dry-run by default. --apply only deletes when enabled=true. Only files BELOW each path are touched, symlinks never followed. Fill real cache paths (placeholders below). See docs/CACHE_HYGIENE.md.",
+  "enabled": false,
+  "min_age_days": 7,
+  "targets": [
+    {
+      "path": "REPLACE_WITH_CACHE_DIR/toolchains",
+      "glob": "*",
+      "min_age_days": 30
+    },
+    {
+      "path": "REPLACE_WITH_CACHE_DIR/browser",
+      "glob": "*.tmp",
+      "min_age_days": 7
+    }
+  ]
+}
