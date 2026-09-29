@@ -1,0 +1,10 @@
+{
+  "_comment": "Memory-snapshot backup config. Ships DISABLED. When enabled, packs the listed memory source paths into a timestamped tar.gz in dest and prunes own snapshots older than retention_days. Reads sources, writes only into dest. Replace the placeholders. See docs/MEMORY_SNAPSHOT.md.",
+  "enabled": false,
+  "sources": [
+    "REPLACE_WITH_PROFILE_HOME/memory",
+    "REPLACE_WITH_PROFILE_HOME/user"
+  ],
+  "dest": "REPLACE_WITH_BACKUP_DIR/memory-snapshots",
+  "retention_days": 30
+}
