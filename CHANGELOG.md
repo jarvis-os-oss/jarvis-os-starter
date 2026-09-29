@@ -6,213 +6,73 @@ Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen jarvis-ai-os main. Jeder
 
 Geprueft: 8 neue Commits. Nachziehen: 2, bewusst nicht: 5, Entscheidung noetig: 1.
 
-- `8fbb2ed82` squash merge PR #107: Cockpit Schritt 2 Stufe 1 - approve/reject pending approval (Status-Flip only, kein Vollzug)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Feature/Erweiterung ('dashboard') - kein Muss fuers Kit
-  - Dateien: .gitignore, dashboard/APPROVALS_CONTRACT.md, dashboard/app.py, dashboard/approvals.html, dashboard/cockpit_approvals.py, dashboard/test_cockpit_approvals.py, evidence/cockpit-step2-approvals.evidence.json
-- `043b0a258` fix(watchdog): State-Guardian gegen state.db Reboot-Kaskade (#99)
-  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
-  - Grund: Generischer Infra-/Bugfix ('watchdog')
-  - Dateien: evidence/state-db-guardian.evidence.json, scripts/jarvis_watchdog.sh, scripts/state_guardian.py, scripts/test_state_guardian.py
-- `09ab14bfd` TEAM_CHARTER: 18 Agenten, Spark offiziell + Wells Health-Scope (#98)
-  - Verdikt: BEWUSST NICHT UEBERNEHMEN
-  - Grund: Marc-spezifische Preference/Daten ('donna')
-  - Dateien: evidence/team-charter-18-agents.evidence.json, profiles-soul/TEAM_CHARTER.md, profiles-soul/ada.SOUL.md, profiles-soul/pixel.SOUL.md, profiles-soul/scotty.SOUL.md, scripts/test_apply_team_charter.py
-- `d5a1ed3a1` mac-voice-client: Hey-Jarvis Sprachassistent (macOS-Fix, Uhrzeit-Aussprache, download-models) (#103)
-  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
-  - Grund: Security/Infra-Signal ('hardcoded') - konservativ zur Pruefung markiert
-  - Dateien: evidence/mac-voice-client.evidence.json, mac-voice-client/.gitignore, mac-voice-client/README.md, mac-voice-client/config.example.yaml, mac-voice-client/heyjarvis/__init__.py, mac-voice-client/heyjarvis/__main__.py, mac-voice-client/heyjarvis/app.py, mac-voice-client/heyjarvis/audio.py ...
-- `4360daa5f` squash merge PR #109: mac-voice-client Datum/Ordinal-Aussprache + kurze schnelle Voice-Antwort
-  - Verdikt: BEWUSST NICHT UEBERNEHMEN
-  - Grund: Marc-spezifische Preference/Daten ('voice')
-  - Dateien: evidence/voice-speech-latency.evidence.json, mac-voice-client/README.md, mac-voice-client/config.example.yaml, mac-voice-client/heyjarvis/config.py, mac-voice-client/heyjarvis/jarvis.py, mac-voice-client/heyjarvis/textnorm.py, mac-voice-client/tests/test_legs.py, mac-voice-client/tests/test_textnorm.py
-- `5e549295a` squash merge PR #111: peerbus escalation notify to JARVIS
-  - Verdikt: BEWUSST NICHT UEBERNEHMEN
-  - Grund: Marc-spezifische Preference/Daten ('elevenlabs')
-  - Dateien: evidence/voice-quality-fixes.evidence.json, mac-voice-client/config.example.yaml, mac-voice-client/heyjarvis/config.py, mac-voice-client/heyjarvis/stt.py, mac-voice-client/heyjarvis/textnorm.py, mac-voice-client/tests/test_legs.py, mac-voice-client/tests/test_textnorm.py
-- `e42459c37` squash merge PR #113: fix(scripts): Squash-Commit-Title dynamisch aus PR-Titel
-  - Verdikt: BEWUSST NICHT UEBERNEHMEN
-  - Grund: Marc-spezifische Preference/Daten ('skalar')
-  - Dateien: evidence/squash-title-dynamic.evidence.json, scripts/gh_rest.py
-- `c98f6d964` squash merge PR #112: mac-voice-client: Nachhoer-Modus, Streaming-TTS, v4-Turbo-Default
-  - Verdikt: BEWUSST NICHT UEBERNEHMEN
-  - Grund: Marc-spezifische Preference/Daten ('elevenlabs')
-  - Dateien: evidence/voice-conversation.evidence.json, mac-voice-client/README.md, mac-voice-client/config.example.yaml, mac-voice-client/heyjarvis/app.py, mac-voice-client/heyjarvis/audio.py, mac-voice-client/heyjarvis/config.py, mac-voice-client/heyjarvis/jarvis.py, mac-voice-client/heyjarvis/pipeline.py ...
-
-Report an JARVIS: JA (2 Nachzieh-Kandidat(en) - Freigabe pro Fall bei Marc/JARVIS)
+Report an den Betreiber: JA (2 Nachzieh-Kandidat(en) - Freigabe pro Fall beim Betreiber)
 
 ## 2026-09-28 - Sync-Lauf (jarvis-ai-os main 716a9b08d..e1c1e0edc)
 
 Geprueft: 2 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 1.
 
-- `7dd0fc044` squash merge PR #105: peerbus escalation notify to JARVIS
-  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
-  - Grund: Generischer Infra-/Bugfix ('docker')
-  - Dateien: evidence/rbac-destroy-class.evidence.json, ops_group/rbac.py, ops_group/tests/test_rbac.py
-- `e1c1e0edc` feat(plugins): delegate-destroy-guard schliesst delegate_task-destroy-Luecke (#106)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Feature/Erweiterung ('feat(') - kein Muss fuers Kit
-  - Dateien: evidence/delegate-destroy-guard.evidence.json, plugins/delegate-destroy-guard/README.md, plugins/delegate-destroy-guard/__init__.py, plugins/delegate-destroy-guard/plugin.yaml, plugins/delegate-destroy-guard/test_delegate_destroy_guard.py
-
-Report an JARVIS: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall bei Marc/JARVIS)
+Report an den Betreiber: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall beim Betreiber)
 
 ## 2026-09-27 - Sync-Lauf (jarvis-ai-os main 9419a5019..716a9b08d)
 
 Geprueft: 1 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 0.
 
-- `716a9b08d` squash merge PR #101: peerbus escalation notify to JARVIS
-  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
-  - Grund: Generischer Infra-/Bugfix ('bump')
-  - Dateien: docs/cron-jobs/skill-kurator.md, docs/skill-contract-format/CONTRACT.md, docs/skill-contract-format/test_skill_contract.py, docs/skill-contract-format/validate_contract.py, evidence/skill-versioning-staleness.evidence.json, skill-governance/METADATA_CONVENTION.md, skill-governance/skill_metadata.py, skill-governance/test_skill_metadata.py
-
-Report an JARVIS: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall bei Marc/JARVIS)
+Report an den Betreiber: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall beim Betreiber)
 
 ## 2026-09-26 - Sync-Lauf (jarvis-ai-os main 600b5d112..9419a5019)
 
 Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 1, Entscheidung noetig: 0.
 
-- `9419a5019` docs(ops_group): Rollout-Plan v0.21.0 -> v0.21.5 (#100)
-  - Verdikt: BEWUSST NICHT UEBERNEHMEN
-  - Grund: Marc-spezifische Preference/Daten ('skalar')
-  - Dateien: evidence/scotty-rollout-plan-v0215.evidence.json, ops_group/rollout_plan_v0215.md
-
-Report an JARVIS: NEIN
+Report an den Betreiber: NEIN
 
 ## 2026-09-22 - Sync-Lauf (jarvis-ai-os main 10f8f06cd..600b5d112)
 
 Geprueft: 3 neue Commits. Nachziehen: 0, bewusst nicht: 0, Entscheidung noetig: 3.
 
-- `dc36bb1b0` docs(governance): MCP-Connector-Policy als interne Konvention (#81)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Unklar - manuelle Einordnung noetig
-  - Dateien: docs/mcp-connector-policy.md, evidence/mcp-connector-policy.evidence.json
-- `980531f2f` feat(skill): agent-architecture-audit als kanonische Skill-Quelle (#82)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Feature/Erweiterung ('feat(') - kein Muss fuers Kit
-  - Dateien: evidence/agent-architecture-audit-skill.evidence.json, skills/agent-architecture-audit/SKILL.md, skills/agent-architecture-audit/scripts/architecture_audit.py, skills/agent-architecture-audit/scripts/test_architecture_audit.py
-- `600b5d112` docs+tooling(skills): 'Use when'-Trigger-Konvention + Audit-Stamper (#83)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Unklar - manuelle Einordnung noetig
-  - Dateien: docs/skill-use-when-convention.md, evidence/skill-use-when-triggers.evidence.json, scripts/apply_use_when_descriptions.py, scripts/skill_use_when_descriptions.json, scripts/test_apply_use_when_descriptions.py
-
-Report an JARVIS: NEIN
+Report an den Betreiber: NEIN
 
 ## 2026-09-21 - Sync-Lauf (jarvis-ai-os main cab7755fa..10f8f06cd)
 
 Geprueft: 1 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 0.
 
-- `10f8f06cd` secret_guard: Pre-Write Secret-Pattern-Warnung im Peer-Mesh-Bus (#97)
-  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
-  - Grund: Security/Infra-Signal ('secret') - konservativ zur Pruefung markiert
-  - Dateien: .gitignore, evidence/secret-guard.evidence.json, ops_group/README.md, ops_group/peerbus.py, ops_group/peerbus_cli.py, ops_group/secret_guard.py, ops_group/tests/test_peerbus.py, ops_group/tests/test_secret_guard.py
-
-Report an JARVIS: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall bei Marc/JARVIS)
+Report an den Betreiber: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall beim Betreiber)
 
 ## 2026-09-20 - Sync-Lauf (jarvis-ai-os main 3034f3b91..cab7755fa)
 
 Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 0, Entscheidung noetig: 1.
 
-- `cab7755fa` AGENTS.md: kompakte Agent-Schnellreferenz im Repo-Root (#96)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Unklar - manuelle Einordnung noetig
-  - Dateien: AGENTS.md, evidence/agents-md.evidence.json
-
-Report an JARVIS: NEIN
+Report an den Betreiber: NEIN
 
 ## 2026-09-19 - Sync-Lauf (jarvis-ai-os main bb5dd9106..3034f3b91)
 
 Geprueft: 1 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 0.
 
-- `3034f3b91` squash merge PR #95: peerbus escalation notify to JARVIS
-  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
-  - Grund: Security/Infra-Signal ('security') - konservativ zur Pruefung markiert
-  - Dateien: .gitignore, browser-profiles/README.md, browser-profiles/browser_profile.sh
-
-Report an JARVIS: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall bei Marc/JARVIS)
+Report an den Betreiber: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall beim Betreiber)
 
 ## 2026-09-18 - Sync-Lauf (jarvis-ai-os main 2dc1cd5d3..bb5dd9106)
 
 Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 1, Entscheidung noetig: 0.
 
-- `bb5dd9106` TEAM_CHARTER: Verifikation nicht als sichtbarer Meta-Satz (#94)
-  - Verdikt: BEWUSST NICHT UEBERNEHMEN
-  - Grund: Marc-spezifische Preference/Daten ('skalar')
-  - Dateien: evidence/team-charter-verification-fix.evidence.json, profiles-soul/TEAM_CHARTER.md, profiles-soul/ada.SOUL.md, profiles-soul/pixel.SOUL.md, profiles-soul/scotty.SOUL.md
-
-Report an JARVIS: NEIN
+Report an den Betreiber: NEIN
 
 ## 2026-09-17 - Sync-Lauf (jarvis-ai-os main 93e647fd3..2dc1cd5d3)
 
 Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 0, Entscheidung noetig: 1.
 
-- `2dc1cd5d3` squash merge PR #93: peerbus escalation notify to JARVIS
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Unklar - manuelle Einordnung noetig
-  - Dateien: evidence/emilkowalski-design-skillset.evidence.json, scripts/apply_emilkowalski_skills.py, scripts/test_apply_emilkowalski_skills.py, skills/emilkowalski-design/LICENSE, skills/emilkowalski-design/README.md, skills/emilkowalski-design/animate-expo/RECIPES.md, skills/emilkowalski-design/animate-expo/SKILL.md, skills/emilkowalski-design/animate/RECIPES.md ...
-
-Report an JARVIS: NEIN
+Report an den Betreiber: NEIN
 
 ## 2026-09-16 - Sync-Lauf (jarvis-ai-os main 3d81a091f..93e647fd3)
 
 Geprueft: 1 neue Commits. Nachziehen: 0, bewusst nicht: 1, Entscheidung noetig: 0.
 
-- `93e647fd3` squash merge PR #90: peerbus escalation notify to JARVIS
-  - Verdikt: BEWUSST NICHT UEBERNEHMEN
-  - Grund: Marc-spezifische Preference/Daten ('skalar')
-  - Dateien: .github/workflows/ocr-precheck.yml, evidence/scotty-ocr-precheck-activate.evidence.json
-
-Report an JARVIS: NEIN
+Report an den Betreiber: NEIN
 
 ## 2026-09-15 - Sync-Lauf (jarvis-ai-os main 4840a9809..3d81a091f)
 
 Geprueft: 11 neue Commits. Nachziehen: 2, bewusst nicht: 2, Entscheidung noetig: 7.
 
-- `3a6c3a413` Add Evidence Record convention for Ada PRs (#77)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Unklar - manuelle Einordnung noetig
-  - Dateien: docs/evidence/README.md, docs/evidence/evidence.template.json, evidence/evidence-record-convention.evidence.json, scripts/test_validate_evidence.py, scripts/validate_evidence.py
-- `35c8df717` ci(evidence-gate): validate_evidence.py als PR-Pflicht-Gate (#78)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Unklar - manuelle Einordnung noetig
-  - Dateien: .github/workflows/evidence-gate.yml, evidence/ci-evidence-gate.evidence.json
-- `4a705db4b` chore(scripts): add scotty reviewer_approve identity to gh_rest.py (#80)
-  - Verdikt: BEWUSST NICHT UEBERNEHMEN
-  - Grund: Marc-spezifische Preference/Daten ('skalar')
-  - Dateien: scripts/gh_rest.py
-- `16c376ed7` squash merge PR #46: peerbus escalation notify to JARVIS
-  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
-  - Grund: Security/Infra-Signal ('pii') - konservativ zur Pruefung markiert
-  - Dateien: eval-harness/.gitignore, eval-harness/README.md, eval-harness/agents.json, eval-harness/bridge.py, eval-harness/cases/ada.json, eval-harness/cases/donna.json, eval-harness/cases/ledger.json, eval-harness/cases/wells.json ...
-- `d154e3365` squash merge PR #53: peerbus escalation notify to JARVIS
-  - Verdikt: BEWUSST NICHT UEBERNEHMEN
-  - Grund: Marc-spezifische Preference/Daten ('tts')
-  - Dateien: docs/evals/codebase-memory-mcp.md
-- `f752b72ec` squash merge PR #54: peerbus escalation notify to JARVIS
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Unklar - manuelle Einordnung noetig
-  - Dateien: docs/evals/agent-reach.md
-- `085b4258c` squash merge PR #55: peerbus escalation notify to JARVIS
-  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
-  - Grund: Security/Infra-Signal ('secret') - konservativ zur Pruefung markiert
-  - Dateien: docs/evals/hermy-hq.md
-- `d7930becd` [squash] PR #84: peerbus escalation notify to JARVIS (T-005)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Unklar - manuelle Einordnung noetig
-  - Dateien: evidence/scotty-model-correction.evidence.json, model-tiering/PER-TASK-PLAN.md, model-tiering/README.md, model-tiering/estimate_saving.py, model-tiering/test_apply_tiering.py, model-tiering/tiering.json
-- `2af9f5b54` [squash] PR #85: peerbus escalation notify to JARVIS (T-005)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Unklar - manuelle Einordnung noetig
-  - Dateien: evidence/soul-separator-collapse.evidence.json, scripts/collapse_soul_separators.py, scripts/test_collapse_soul_separators.py
-- `d7cd484ca` [squash] PR #86: peerbus escalation notify to JARVIS (T-005)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Feature/Erweiterung ('pilot') - kein Muss fuers Kit
-  - Dateien: evidence/magnet-pilot-status.evidence.json, scripts/apply_magnet_pilot_status.py, scripts/test_apply_magnet_pilot_status.py
-- `3d81a091f` [squash] PR #87: peerbus escalation notify to JARVIS (T-005)
-  - Verdikt: ADA/MARC-ENTSCHEIDUNG NOETIG
-  - Grund: Unklar - manuelle Einordnung noetig
-  - Dateien: evidence/scout-fetch-skill.evidence.json, scout-fetch-protokoll/SKILL.md, scripts/apply_scout_fetch_skill.py, scripts/test_apply_scout_fetch_skill.py
-
-Report an JARVIS: JA (2 Nachzieh-Kandidat(en) - Freigabe pro Fall bei Marc/JARVIS)
+Report an den Betreiber: JA (2 Nachzieh-Kandidat(en) - Freigabe pro Fall beim Betreiber)
 
 Dies ist eine neutrale Vorlage. Reale Eintraege entstehen erst zur Laufzeit in der jeweiligen Instanz und referenzieren dort ausschliesslich das lokal konfigurierte Upstream-Repo.
 
