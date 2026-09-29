@@ -2,6 +2,45 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen upstream main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-29 - Sync-Lauf (upstream main e1c1e0edc..c98f6d964)
+
+Geprueft: 8 neue Commits. Nachziehen: 2, bewusst nicht: 5, Entscheidung noetig: 1.
+
+- `8fbb2ed82` squash merge PR #107: Cockpit Schritt 2 Stufe 1 - approve/reject pending approval (Status-Flip only, kein Vollzug)
+  - Verdikt: ADA/OWNER-ENTSCHEIDUNG NOETIG
+  - Grund: Feature/Erweiterung ('dashboard') - kein Muss fuers Kit
+  - Dateien: .gitignore, dashboard/APPROVALS_CONTRACT.md, dashboard/app.py, dashboard/approvals.html, dashboard/cockpit_approvals.py, dashboard/test_cockpit_approvals.py, evidence/cockpit-step2-approvals.evidence.json
+- `043b0a258` fix(watchdog): State-Guardian gegen state.db Reboot-Kaskade (#99)
+  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
+  - Grund: Generischer Infra-/Bugfix ('watchdog')
+  - Dateien: evidence/state-db-guardian.evidence.json, scripts/jarvis_watchdog.sh, scripts/state_guardian.py, scripts/test_state_guardian.py
+- `09ab14bfd` TEAM_INFO: 18 Agenten, Agent-K offiziell + Agent-C Health-Scope (#98)
+  - Verdikt: BEWUSST NICHT UEBERNEHMEN
+  - Grund: the operator-spezifische Preference/Daten ('donna')
+  - Dateien: evidence/team-info-18-agents.evidence.json, agents/TEAM_INFO.md, agents/ada.SOUL.md, agents/pixel.SOUL.md, agents/scotty.SOUL.md, scripts/test_apply_team_info.py
+- `d5a1ed3a1` voice-client: Hey-Jarvis Sprachassistent (macOS-Fix, Uhrzeit-Aussprache, download-models) (#103)
+  - Verdikt: SOLLTE NACHGEZOGEN WERDEN
+  - Grund: Security/Infra-Signal ('hardcoded') - konservativ zur Pruefung markiert
+  - Dateien: evidence/voice-client.evidence.json, voice-client/.gitignore, voice-client/README.md, voice-client/config.example.yaml, voice-client/heyjarvis/__init__.py, voice-client/heyjarvis/__main__.py, voice-client/heyjarvis/app.py, voice-client/heyjarvis/audio.py ...
+- `4360daa5f` squash merge PR #109: voice-client Datum/Ordinal-Aussprache + kurze schnelle Voice-Antwort
+  - Verdikt: BEWUSST NICHT UEBERNEHMEN
+  - Grund: the operator-spezifische Preference/Daten ('voice')
+  - Dateien: evidence/voice-speech-latency.evidence.json, voice-client/README.md, voice-client/config.example.yaml, voice-client/heyjarvis/config.py, voice-client/heyjarvis/jarvis.py, voice-client/heyjarvis/textnorm.py, voice-client/tests/test_legs.py, voice-client/tests/test_textnorm.py
+- `5e549295a` squash merge PR #111: internal-bus escalation notify to JARVIS
+  - Verdikt: BEWUSST NICHT UEBERNEHMEN
+  - Grund: the operator-spezifische Preference/Daten ('REDACTED')
+  - Dateien: evidence/voice-quality-fixes.evidence.json, voice-client/config.example.yaml, voice-client/heyjarvis/config.py, voice-client/heyjarvis/stt.py, voice-client/heyjarvis/textnorm.py, voice-client/tests/test_legs.py, voice-client/tests/test_textnorm.py
+- `e42459c37` squash merge PR #113: fix(scripts): Squash-Commit-Title dynamisch aus PR-Titel
+  - Verdikt: BEWUSST NICHT UEBERNEHMEN
+  - Grund: the operator-spezifische Preference/Daten ('REDACTED')
+  - Dateien: evidence/squash-title-dynamic.evidence.json, scripts/gh_rest.py
+- `c98f6d964` squash merge PR #112: voice-client: Nachhoer-Modus, Streaming-TTS, v4-Turbo-Default
+  - Verdikt: BEWUSST NICHT UEBERNEHMEN
+  - Grund: the operator-spezifische Preference/Daten ('REDACTED')
+  - Dateien: evidence/voice-conversation.evidence.json, voice-client/README.md, voice-client/config.example.yaml, voice-client/heyjarvis/app.py, voice-client/heyjarvis/audio.py, voice-client/heyjarvis/config.py, voice-client/heyjarvis/jarvis.py, voice-client/heyjarvis/pipeline.py ...
+
+Report an JARVIS: JA (2 Nachzieh-Kandidat(en) - Freigabe pro Fall bei the operator/JARVIS)
+
 ## 2026-09-28 - Sync-Lauf (upstream main 716a9b08d..e1c1e0edc)
 
 Geprueft: 2 neue Commits. Nachziehen: 1, bewusst nicht: 0, Entscheidung noetig: 1.
