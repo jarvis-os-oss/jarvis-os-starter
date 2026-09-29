@@ -2,6 +2,15 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen jarvis-ai-os main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-09-29 - Portabler Delta portiert (kuratierter Review-PR)
+
+Ein kuratierter Batch generischer Verbesserungen wurde ins Kit portiert (ein Review-PR, kein Auto-Merge):
+
+- state.db Guardian: scripts/state_guardian.py (stdlib-only integrity-check + Hot-Backup + Auto-Restore vor jedem Gateway-Start), tests/test_state_guardian.py (unittest), Watchdog-Verdrahtung in infra/watchdog.sh (AIOS_STATE_GUARD, default an, HERMES_HOME-basierte Profil-DB-Pfade), docs/STATE_GUARDIAN.md. Generischer Zuverlaessigkeits-Fix gegen die Reboot/OOM-Crash-Loop, trifft jede Kit-Instanz.
+
+Bewusst NICHT portiert: instanzspezifische Persona-/Voice-Features, Team-/Rollen-Spezifika, interne Message-Bus-Details und rein interne Merge-Workflow-Fixes (nicht generisch genug fuers Kit).
+
+
 ## 2026-09-29 - Sync-Lauf (jarvis-ai-os main e1c1e0edc..c98f6d964)
 
 Geprueft: 8 neue Commits. Nachziehen: 2, bewusst nicht: 5, Entscheidung noetig: 1.

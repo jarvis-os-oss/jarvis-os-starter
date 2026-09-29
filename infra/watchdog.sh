@@ -21,9 +21,45 @@ set -u
 # AIOS_AGENTS (here or in infra/.env) to the profiles you actually created, e.g.
 #   AIOS_AGENTS="default assistant researcher developer maintenance writer"
 : "${AIOS_AGENTS:=default}"
+# Hermes home that holds the per-profile state.db. Override if your runtime home
+# is elsewhere. Default profile DB sits at the home root; sub-profiles under
+# profiles/<name>/state.db.
+: "${HERMES_HOME:=${HOME}/.hermes}"
+# state.db guardian: integrity-check + hot-backup + auto-restore BEFORE each
+# gateway start, so a corrupt DB (reboot/OOM mid-write) cannot drive a
+# crash-restart loop. Off is not an option, but a missing DB is fine (fresh
+# install). Set AIOS_STATE_GUARD=0 to disable entirely.
+: "${AIOS_STATE_GUARD:=1}"
+GUARDIAN="${AIOS_HOME}/scripts/state_guardian.py"
+GUARD_LOG="${AIOS_HOME}/logs/state_guardian.log"
 
 DASH_LOG="${AIOS_HOME}/logs/dashboard.log"
 mkdir -p "${AIOS_HOME}/logs" 2>/dev/null || true
+
+# state_db_for PROFILE -> echo path to that profile's state.db (best effort).
+# "default" is the Hermes home root, sub-profiles live under profiles/<name>/.
+# Empty output means "unknown" and the guard is skipped (never a false block).
+state_db_for() {
+  p="$1"
+  if [ "${p}" = "default" ]; then
+    [ -f "${HERMES_HOME}/state.db" ] && { echo "${HERMES_HOME}/state.db"; return 0; }
+  else
+    [ -f "${HERMES_HOME}/profiles/${p}/state.db" ] && { echo "${HERMES_HOME}/profiles/${p}/state.db"; return 0; }
+  fi
+  echo ""
+}
+
+# guard_ok PROFILE -> 0 if start allowed (DB healthy, auto-restored, or no DB
+# found), 1 if the start must be blocked (guardian exit 3: corrupt + no restore).
+guard_ok() {
+  [ "${AIOS_STATE_GUARD}" = "1" ] || return 0
+  [ -f "${GUARDIAN}" ] || return 0
+  db="$(state_db_for "$1")"
+  [ -n "${db}" ] || return 0
+  "${PYTHON_BIN}" "${GUARDIAN}" --db "${db}" guard >> "${GUARD_LOG}" 2>&1
+  [ "$?" -eq 3 ] && return 1
+  return 0
+}
 
 started=""
 
@@ -60,6 +96,12 @@ for profile in ${AIOS_AGENTS}; do
     continue
   fi
   if ! "${HERMES_BIN}" -p "${profile}" gateway status 2>/dev/null | grep -q "is running"; then
+    # Integrity gate BEFORE the (re)start: never blind-start on a corrupt
+    # state.db (that is the crash-restart loop this guards against).
+    if ! guard_ok "${profile}"; then
+      blocked="${blocked}${profile} "
+      continue
+    fi
     # run --replace: idempotent takeover of any stale gateway for this profile.
     nohup "${HERMES_BIN}" -p "${profile}" gateway run --replace \
       > "${AIOS_HOME}/logs/gw_${profile}.log" 2>&1 &
@@ -74,6 +116,9 @@ if [ -n "${started}" ]; then
 fi
 if [ -n "${missing:-}" ]; then
   echo "SKIPPED (profile not found, create it first): ${missing}"
+fi
+if [ -n "${blocked:-}" ]; then
+  echo "BLOCKED (state.db corrupt, no auto-restore possible): ${blocked}-> see ${GUARD_LOG}"
 fi
 
 # 3) OPTIONAL upstream update check (READ-ONLY, opt-in) ----------------------
