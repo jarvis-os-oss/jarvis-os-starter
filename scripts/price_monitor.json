@@ -1,0 +1,15 @@
+{
+  "_comment": "Product-/price-monitor config. Ships DISABLED and NEVER buys anything. It only alerts when a delivered price meets target_price. Fetching the current price is site-specific and intentionally out of scope (feed prices via --price or --snapshot). See docs/PRICE_MONITOR.md.",
+  "enabled": false,
+  "state_file": "REPLACE_WITH_STATE_DIR/price_monitor_state.json",
+  "items": [
+    {
+      "name": "widget",
+      "target_price": 19.99
+    },
+    {
+      "name": "gadget",
+      "target_price": 49.0
+    }
+  ]
+}
