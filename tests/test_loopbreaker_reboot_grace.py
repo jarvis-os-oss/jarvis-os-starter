@@ -89,8 +89,12 @@ class RebootGraceTest(unittest.TestCase):
         g = _load_guard(self.home)
         self.assertIs(g._is_host_reboot_boot(120, uptime=119.9), True)
         self.assertIs(g._is_host_reboot_boot(120, uptime=120.0), False)
-        self.assertIs(g._is_host_reboot_boot(120, uptime=None) or False, False)
         self.assertIs(g._is_host_reboot_boot(0, uptime=5.0), False)
+        # uptime=None means "read /proc/uptime": stub it so the result does not depend on the host
+        g._system_uptime_seconds = lambda: None
+        self.assertIs(g._is_host_reboot_boot(120), False)  # unreadable uptime fails closed
+        g._system_uptime_seconds = lambda: 5.0
+        self.assertIs(g._is_host_reboot_boot(120), True)
 
     def test_patch_reproduces_reference(self):
         """The shipped patch is present and touches only the guard file."""
