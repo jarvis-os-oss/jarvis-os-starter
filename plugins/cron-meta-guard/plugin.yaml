@@ -1,0 +1,15 @@
+name: cron-meta-guard
+version: "1.0.0"
+description: >
+  Guard against meta replies in cron runs. If the final text of an agent cron
+  run contains meta patterns (an offer to proceed, a request for explicit
+  approval, a clarifying question instead of the deliverable), delivery is
+  suppressed ([SILENT] via transform_llm_output), the run is marked as error,
+  the job is restarted once through trigger_job with the extra instruction to
+  output only the message text, and on a second failure only the operator is
+  notified (alert file). No upstream patch. Fail-open. Kill switch
+  CRON_META_GUARD_DISABLE=1. Opt-in: inactive until listed in plugins.enabled.
+author: "jarvis-os-starter contributors"
+kind: standalone
+provides_hooks:
+  - transform_llm_output

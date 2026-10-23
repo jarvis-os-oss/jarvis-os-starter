@@ -1,0 +1,4 @@
+{
+  "_note": "Jobs that cron-meta-guard never checks. Entries: job id, 'profile:job_id' or job name (glob allowed). Script jobs (no_agent) are detected at runtime and need no entry.",
+  "entries": []
+}
