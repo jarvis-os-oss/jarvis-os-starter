@@ -1,0 +1,98 @@
+diff --git a/gateway/restart_loop_guard.py b/gateway/restart_loop_guard.py
+index 9de39b6..9a73c62 100644
+--- a/gateway/restart_loop_guard.py
++++ b/gateway/restart_loop_guard.py
+@@ -30,6 +30,14 @@ DEFAULT_WINDOW_SECONDS = 60
+ # loop drops its history every boot and never trips); chaining on the inter-boot
+ # gap is period-agnostic, and real quiet resets it.
+ DEFAULT_MAX_GAP_SECONDS = 300
++# Below this system uptime a boot is treated as part of a genuine HOST reboot (kernel/VPS
++# restart, e.g. an upgrade that reboots the box) rather than a self-inflicted respawn loop.
++# During a real reboot several gateway slots can race for the host lock for a couple of
++# minutes and produce a fast, LEGITIMATE restart-interrupted cascade; counting those as a loop
++# disables auto-resume until manual intervention. Boots this soon after the host came up do
++# NOT extend the loop chain and RESET it. A crash-loop inside a long-lived host has high
++# uptime and is still capped hard. <=0 disables the grace entirely.
++DEFAULT_REBOOT_GRACE_SECONDS = 120
+ # Only the newest ``max_restarts`` entries can change a verdict; the rest are forensics.
+ _MAX_STORED_BOOTS = 50
+ 
+@@ -38,6 +46,32 @@ def _state_path():
+     return get_hermes_home() / "gateway" / "restart_loop.json"
+ 
+ 
++def _system_uptime_seconds() -> Optional[float]:
++    """Seconds since the host booted, from ``/proc/uptime``; ``None`` when unreadable.
++
++    Fails CLOSED for the grace feature: an unknown uptime means we CANNOT prove a real host
++    reboot, so callers must keep counting the boot normally (the breaker stays fully armed).
++    """
++    try:
++        with open("/proc/uptime", encoding="utf-8") as fh:
++            return float(fh.read().split()[0])
++    except (OSError, ValueError, IndexError):
++        return None
++
++
++def _is_host_reboot_boot(reboot_grace_seconds: int, *, uptime: Optional[float] = None) -> bool:
++    """True when this boot happened within ``reboot_grace_seconds`` of the host coming up.
++
++    Such a boot is part of a genuine host-reboot cascade, not a self-inflicted respawn loop,
++    so it must not extend or trip the loop chain. Requires a KNOWN low uptime: if uptime is
++    unreadable or the grace is disabled (<=0), returns False so the breaker stays armed.
++    """
++    if reboot_grace_seconds <= 0:
++        return False
++    up = _system_uptime_seconds() if uptime is None else uptime
++    return up is not None and up < reboot_grace_seconds
++
++
+ def _load_boots() -> list[float]:
+     try:
+         # utf-8-sig: our BOM-tolerant read fix for the persisted boot log.
+@@ -83,11 +117,21 @@ def _chain_ending_at(boots: list[float], ts: float, gap: float) -> list[float]:
+ def record_restart_interrupted_boot(
+     window_seconds: int = DEFAULT_WINDOW_SECONDS, *, now: Optional[float] = None,
+     max_gap_seconds: int = DEFAULT_MAX_GAP_SECONDS,
++    reboot_grace_seconds: int = DEFAULT_REBOOT_GRACE_SECONDS,
++    uptime: Optional[float] = None,
+ ) -> list[float]:
+     """Record a restart-interrupted boot; return the pruned chain + now (most recent
+-    last).  A persistence failure returns the in-memory list without raising."""
++    last).  A persistence failure returns the in-memory list without raising.
++
++    When this boot happened within ``reboot_grace_seconds`` of the host coming up it is part
++    of a genuine host-reboot cascade (not a self-inflicted respawn loop): the prior chain is
++    DROPPED and only this boot is kept, so a legitimate reboot can never trip the breaker.
++    """
+     ts = time.time() if now is None else now
+-    boots = _chain_ending_at(_load_boots(), ts, _chain_gap(window_seconds, max_gap_seconds)) + [ts]
++    if _is_host_reboot_boot(reboot_grace_seconds, uptime=uptime):
++        boots = [ts]
++    else:
++        boots = _chain_ending_at(_load_boots(), ts, _chain_gap(window_seconds, max_gap_seconds)) + [ts]
+     _save_boots(boots[-_MAX_STORED_BOOTS:])
+     return boots
+ 
+@@ -101,10 +145,19 @@ def clear() -> None:
+ def check_and_record(
+     max_restarts: int = DEFAULT_MAX_RESTARTS, window_seconds: int = DEFAULT_WINDOW_SECONDS, *,
+     now: Optional[float] = None, max_gap_seconds: int = DEFAULT_MAX_GAP_SECONDS,
++    reboot_grace_seconds: int = DEFAULT_REBOOT_GRACE_SECONDS,
+ ) -> bool:
+     """Gateway entry point: record this boot; True when the chain reached
+-    ``max_restarts`` and auto-resume should be SKIPPED."""
+-    boots = record_restart_interrupted_boot(window_seconds, now=now, max_gap_seconds=max_gap_seconds)
++    ``max_restarts`` and auto-resume should be SKIPPED.
++
++    A boot within ``reboot_grace_seconds`` of the host coming up is a legitimate host-reboot
++    cascade: it resets the chain and can never trip. Genuine crash loops on a long-lived host
++    have high uptime and are still capped hard.
++    """
++    boots = record_restart_interrupted_boot(
++        window_seconds, now=now, max_gap_seconds=max_gap_seconds,
++        reboot_grace_seconds=reboot_grace_seconds,
++    )
+     tripped = max_restarts > 0 and len(boots) >= max_restarts
+     if tripped:
+         logger.warning(
