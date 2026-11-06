@@ -1,21 +1,12 @@
 {
   "tracked_repo": "jarvis-os-oss/jarvis-os-starter",
   "tracked_branch": "main",
-  "last_checked_sha": "272996b243fe83070cd4fa4758c8b3475d7547ac",
-  "last_checked_at": "2026-11-05T06:02:10Z",
-  "last_run_at": "2026-11-05T06:02:10Z",
-  "runs": 41,
+  "last_checked_sha": "2035a7c54689685be8351c854cfea4e4235f71d6",
+  "last_checked_at": "2026-11-06T06:02:20Z",
+  "last_run_at": "2026-11-06T06:02:20Z",
+  "runs": 42,
   "note": "Versionsmanagement-Anker: letzter gegen das getrackte Upstream-Repo gepruefter Commit. Wird bei jedem Sync-Lauf fortgeschrieben. Neutraler Platzhalter-Seed - reale Werte entstehen erst zur Laufzeit in der jeweiligen Instanz.",
   "history": [
-    {
-      "checked_at": "2026-09-17T06:02:21Z",
-      "from_sha": "93e647fd3c6f0973ef92edf8a374cd46f7554dec",
-      "to_sha": "2dc1cd5d3343f503cba318e7e6587df3a1584506",
-      "new_commits": 1,
-      "nachziehen": 0,
-      "nicht": 0,
-      "entscheidung": 1
-    },
     {
       "checked_at": "2026-09-18T06:02:51Z",
       "from_sha": "2dc1cd5d3343f503cba318e7e6587df3a1584506",
@@ -372,6 +363,15 @@
       "nachziehen": 1,
       "nicht": 0,
       "entscheidung": 0
+    },
+    {
+      "checked_at": "2026-11-06T06:02:20Z",
+      "from_sha": "272996b243fe83070cd4fa4758c8b3475d7547ac",
+      "to_sha": "2035a7c54689685be8351c854cfea4e4235f71d6",
+      "new_commits": 2,
+      "nachziehen": 1,
+      "nicht": 0,
+      "entscheidung": 1
     }
   ]
 }
