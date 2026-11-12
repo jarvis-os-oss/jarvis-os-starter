@@ -2,6 +2,12 @@
 
 Nachvollziehbarkeits-Log des taeglichen Abgleichs gegen jarvis-ai-os main. Jeder Eintrag haelt fest, welche Upstream-Commits geprueft und wie sie klassifiziert wurden (auch wenn noch nicht umgesetzt). Erzeugt von scripts (Scotty), nicht manuell.
 
+## 2026-11-12 - Sync-Lauf (upstream main 1729a30e9..3c1d420fe)
+
+Geprueft: 3 neue Commits. Nachziehen: 1, bewusst nicht: 2, Entscheidung noetig: 0.
+
+Report an den Betreiber: JA (1 Nachzieh-Kandidat(en) - Freigabe pro Fall beim Betreiber)
+
 ## 2026-11-11 - Sync-Lauf (upstream main e8389df06..1729a30e9)
 
 Geprueft: 7 neue Commits. Nachziehen: 2, bewusst nicht: 2, Entscheidung noetig: 3.
