@@ -1,27 +1,12 @@
 {
   "tracked_repo": "jarvis-os-oss/jarvis-os-starter",
   "tracked_branch": "main",
-  "last_checked_sha": "c466f0249069003e6f84859b67f245500a9f0b60",
-  "last_checked_at": "2026-11-19T06:02:46Z",
-  "last_run_at": "2026-11-19T06:02:46Z",
-  "runs": 51,
+  "last_checked_sha": "b42954445f5d48be70ec728abda6ff8b8f483470",
+  "last_checked_at": "2026-11-22T06:02:14Z",
+  "last_run_at": "2026-11-22T06:02:14Z",
+  "runs": 52,
   "note": "Versionsmanagement-Anker: letzter gegen das getrackte Upstream-Repo gepruefter Commit. Wird bei jedem Sync-Lauf fortgeschrieben. Neutraler Platzhalter-Seed - reale Werte entstehen erst zur Laufzeit in der jeweiligen Instanz.",
   "history": [
-    {
-      "checked_at": "2026-09-29T00:00:00Z",
-      "type": "portable_delta_pr",
-      "anchor_sha": "c98f6d964e16080ec883d947e81a251286141c53",
-      "ported": [
-        "state_guardian (scripts/state_guardian.py, tests/test_state_guardian.py, infra/watchdog.sh wiring, docs/STATE_GUARDIAN.md)"
-      ],
-      "excluded": [
-        "instance-specific persona/voice features",
-        "team/role specifics",
-        "internal message-bus details",
-        "internal merge-workflow fix"
-      ],
-      "note": "Kuratierter Review-PR (kein Auto-Merge). Anker unveraendert, da bereits auf HEAD; portierter Inhalt lag im bereits geprueften Fenster."
-    },
     {
       "checked_at": "2026-09-30T06:02:53Z",
       "from_sha": "c98f6d964e16080ec883d947e81a251286141c53",
@@ -372,6 +357,15 @@
       "nachziehen": 0,
       "nicht": 1,
       "entscheidung": 0
+    },
+    {
+      "checked_at": "2026-11-22T06:02:14Z",
+      "from_sha": "c466f0249069003e6f84859b67f245500a9f0b60",
+      "to_sha": "b42954445f5d48be70ec728abda6ff8b8f483470",
+      "new_commits": 4,
+      "nachziehen": 1,
+      "nicht": 0,
+      "entscheidung": 3
     }
   ]
 }
